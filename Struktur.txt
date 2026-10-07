@@ -1,0 +1,37 @@
+videobelajar/
+├── node_modules/
+├── public/
+├── src/
+│   ├── assets/              # Gambar, ilustrasi, logo
+│   ├── components/          # Komponen UI kecil & reusable
+│   │   ├── Button.jsx       # Tombol (Primary, Secondary, Soft, Outline)
+│   │   ├── InputField.jsx   # Form Input (Text, Email, Password)
+│   │   ├── Chip.jsx         # Badge/Tag Status
+│   │   └── CourseCard.jsx   # Kartu Ringkasan Kursus
+│   │
+│   ├── layouts/             # Komponen bingkai/tata letak halaman
+│   │   ├── Navbar.jsx       # Header Navigasi Atas
+│   │   ├── Footer.jsx       # Footer/Kaki Halaman
+│   │   └── UserSidebar.jsx  # Navigasi Samping Dashboard User
+│   │
+│   ├── pages/               # Halaman utama aplikasi
+│   │   ├── Login.jsx        # Halaman Masuk
+│   │   ├── Register.jsx     # Halaman Daftar
+│   │   ├── Home.jsx         # Beranda & Katalog
+│   │   ├── CourseDetail.jsx # Detail Kursus
+│   │   ├── Checkout.jsx     # Transaksi & Pembayaran
+│   │   ├── Success.jsx      # Status Pembayaran Berhasil
+│   │   ├── Profile.jsx      # Ubah Profil
+│   │   ├── MyCourses.jsx    # Kelas Saya
+│   │   └── Orders.jsx       # Pesanan Saya
+│   │
+│   ├── App.css              # Directive Tailwind (@tailwind base; dll)
+│   ├── App.jsx              # Pengatur Rute Navigasi (React Router)
+│   └── main.jsx             # Entry Point React
+│
+├── .gitignore
+├── index.html               # File HTML utama (Link Font Lato)
+├── package.json
+├── postcss.config.js        # Konfigurasi PostCSS
+├── tailwind.config.js       # Konfigurasi Warna & Font Lato Style Guide
+└── vite.config.js

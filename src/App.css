@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/* Nilai di bawah diambil langsung dari Figma (halaman Login & Register) */
+@theme {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+
+  /* Body Medium di Figma: 16px, line-height 140% */
+  --text-base--line-height: 1.4;
+
+  /* Primary */
+  --color-brandGreen: #3ECF4C;
+  --color-brandGreen-hover: #36B843;
+  --color-brandGreen-light: rgba(226, 252, 217, 0.8);
+
+  /* Warna lama (masih dipakai komponen lain) */
+  --color-brandYellow: #FFC107;
+  --color-brandOrange: #F26522;
+
+  /* Logo */
+  --color-logoYellow: #FFBD3A;
+  --color-logoOrange: #F64920;
+
+  /* Teks */
+  --color-textPrimary: #222325;
+  --color-textSecondary: rgba(51, 51, 51, 0.68);
+  --color-textMuted: #4A505C;
+  --color-iconMuted: rgba(58, 53, 65, 0.38);
+
+  /* Border & latar */
+  --color-borderField: rgba(58, 53, 65, 0.12);
+  --color-borderCard: #F1F1F1;
+  --color-cream: #FFFDF3;
+  --color-fieldAddon: #F4F5FA;
+
+  /* Error */
+  --color-error: #FF5C2B;
+
+  /* Aksen */
+  --color-tertiary: #F64920;   /* tab aktif, Reset, Salin, harga coret */
+  --color-star: #F9CC00;
+  --color-stepMuted: #B4B6BB;
+  --color-timerBg: #FFF2E2;
+}
