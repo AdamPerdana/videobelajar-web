@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { daftarUser } from '../services/api/userApi';
 import AuthLayout from '../layouts/AuthLayout';
 import InputField from '../components/InputField';
 import PhoneField from '../components/PhoneField';
@@ -22,6 +23,8 @@ export default function Register() {
     konfirmasiPassword: '',
   });
   const [errors, setErrors] = useState({});
+  const [galat, setGalat] = useState(''); // pesan error dari API (email sudah terdaftar, server mati)
+  const [memuat, setMemuat] = useState(false);
 
   const handleChange = (e) => {
     const { name } = e.target;
@@ -32,9 +35,10 @@ export default function Register() {
 
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: '' }); // hapus error saat user mengetik lagi
+    setGalat('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const errorBaru = {};
@@ -70,14 +74,24 @@ export default function Register() {
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    // TODO: sambungkan ke API pendaftaran di sini
-    login({
-      nama: formData.nama,
-      email: formData.email,
-      kodeNegara: formData.kodeNegara,
-      noHp: formData.noHp,
-    });
-    navigate(tujuan, { replace: true });
+    // Daftar lewat API (POST /users). Konfirmasi kata sandi tidak ikut dikirim.
+    setMemuat(true);
+    setGalat('');
+    try {
+      const user = await daftarUser({
+        nama: formData.nama.trim(),
+        email: formData.email.trim(),
+        kodeNegara: formData.kodeNegara,
+        noHp: formData.noHp,
+        password: formData.password,
+      });
+      login(user);
+      navigate(tujuan, { replace: true });
+    } catch (err) {
+      setGalat(err.message);
+    } finally {
+      setMemuat(false);
+    }
   };
 
   if (sudahLogin) return <Navigate to={tujuan} replace />;
@@ -149,8 +163,13 @@ export default function Register() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <Button type="submit" variant="primary" size="lg" fullWidth>
-            Daftar
+          {galat && (
+            <p role="alert" className="text-sm text-error">
+              {galat}
+            </p>
+          )}
+          <Button type="submit" variant="primary" size="lg" fullWidth disabled={memuat}>
+            {memuat ? 'Memproses...' : 'Daftar'}
           </Button>
           <Button variant="secondary" size="lg" fullWidth onClick={() => navigate('/login')}>
             Masuk

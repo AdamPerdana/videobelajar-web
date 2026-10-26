@@ -8,7 +8,7 @@ import { menuAkun } from '../data/account';
 // Foto profil di navbar. Diklik -> menu Profil Saya, Kelas Saya, Pesanan Saya, Keluar.
 export default function UserMenu() {
   const [terbuka, setTerbuka] = useState(false);
-  const { logout } = useAuth();
+  const { pengguna, logout } = useAuth();
 
   const baris = 'flex items-center gap-3 w-full h-12 px-4 text-base font-medium tracking-[0.2px] text-left cursor-pointer hover:bg-fieldAddon';
 
@@ -22,7 +22,7 @@ export default function UserMenu() {
         onClick={() => setTerbuka(!terbuka)}
         className="block cursor-pointer"
       >
-        <Gambar nama="avatar-user" alt="" label={false} className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px]" />
+        <Gambar nama={pengguna?.foto} cadangan="avatar-user" alt="" label={false} className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px]" />
       </button>
 
       {terbuka && (

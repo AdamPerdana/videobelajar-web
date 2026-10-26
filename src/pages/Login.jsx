@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { masukUser } from '../services/api/userApi';
 import AuthLayout from '../layouts/AuthLayout';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
@@ -14,14 +15,17 @@ export default function Login() {
   const tujuan = '/';
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
+  const [galat, setGalat] = useState(''); // pesan error dari API (email/sandi salah, server mati)
+  const [memuat, setMemuat] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: '' }); // hapus error saat user mengetik lagi
+    setGalat('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const errorBaru = {};
@@ -37,9 +41,18 @@ export default function Login() {
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    // TODO: sambungkan ke API login di sini (cek email dan kata sandi)
-    login({ email: formData.email });
-    navigate(tujuan, { replace: true });
+    // Login lewat API (GET /users?email=...)
+    setMemuat(true);
+    setGalat('');
+    try {
+      const user = await masukUser(formData.email.trim(), formData.password);
+      login(user);
+      navigate(tujuan, { replace: true });
+    } catch (err) {
+      setGalat(err.message);
+    } finally {
+      setMemuat(false);
+    }
   };
 
   // Sudah login tidak perlu melihat halaman ini lagi
@@ -80,8 +93,13 @@ export default function Login() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <Button type="submit" variant="primary" size="lg" fullWidth>
-            Masuk
+          {galat && (
+            <p role="alert" className="text-sm text-error">
+              {galat}
+            </p>
+          )}
+          <Button type="submit" variant="primary" size="lg" fullWidth disabled={memuat}>
+            {memuat ? 'Memproses...' : 'Masuk'}
           </Button>
           <Button variant="secondary" size="lg" fullWidth onClick={() => navigate('/register')}>
             Daftar
