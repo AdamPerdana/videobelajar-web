@@ -1,6 +1,6 @@
-// DATA CONTOH. Isinya mengikuti desain Figma (semua kartu sama),
-// hanya kategori, harga, dan durasi yang dibedakan supaya filter bisa dicoba.
-// Nanti data ini diganti dengan data dari API.
+
+
+
 
 const dasar = {
   judul: 'Big 4 Auditor Financial Analyst',
@@ -9,8 +9,8 @@ const dasar = {
   tutor: { nama: 'Jenna Ortega', jabatan: 'Senior Accountant', perusahaan: 'Gojek' },
   rating: 3.5,
   jumlahReview: 86,
-  harga: 300,        // dalam ribuan rupiah (300 = Rp 300K)
-  hargaCoret: null,  // harga sebelum diskon, kalau ada
+  harga: 300,        
+  hargaCoret: null,  
 };
 
 export const daftarKelas = [
@@ -25,7 +25,7 @@ export const daftarKelas = [
   { ...dasar, id: 9, gambar: 'course-9', avatar: 'tutor-9', kategori: 'Bisnis Manajemen', durasi: 12 },
 ];
 
-// Tab di Beranda
+
 export const tabKategori = [
   { label: 'Semua Kelas', nilai: 'semua' },
   { label: 'Pemasaran', nilai: 'Pemasaran' },
@@ -34,7 +34,7 @@ export const tabKategori = [
   { label: 'Bisnis', nilai: 'Bisnis Manajemen' },
 ];
 
-// Pilihan filter di halaman Kategori
+
 export const pilihanBidang = ['Pemasaran', 'Digital & Teknologi', 'Pengembangan Diri', 'Bisnis Manajemen'];
 
 export const pilihanHarga = [
@@ -58,7 +58,7 @@ export const pilihanUrutan = [
   { id: 'rating-rendah', label: 'Rating Terendah', banding: (a, b) => a.rating - b.rating },
 ];
 
-// Isi halaman Detail Kelas (sama untuk semua kelas, mengikuti desain)
+
 const tutorDetail = {
   nama: 'Gregorius Edrik Lawanto',
   jabatan: 'Senior Talent Acquisition',
@@ -110,7 +110,7 @@ export const detailKelas = {
   ],
 };
 
-// 300 -> "Rp 300K"
+
 export function hargaRibuan(nilai) {
   return `Rp ${nilai}K`;
 }

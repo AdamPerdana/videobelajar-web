@@ -4,8 +4,8 @@ import Ikon from '../components/Ikon';
 import UserMenu from '../components/UserMenu';
 import Button from '../components/Button';
 
-// Kerangka ruang belajar: bar atas (judul + progres), isi, daftar modul di kanan,
-// dan bar hijau di bawah untuk pindah ke modul sebelum/sesudahnya.
+
+
 export default function LearnLayout({
   judul,
   kembaliKe,
@@ -13,8 +13,8 @@ export default function LearnLayout({
   jumlahModul,
   onAmbilSertifikat,
   sidebar,
-  sebelumnya,     // { judul, onKlik } atau null
-  berikutnya,     // { judul, onKlik } atau null
+  sebelumnya,     
+  berikutnya,     
   children,
 }) {
   const [popTerbuka, setPopTerbuka] = useState(false);

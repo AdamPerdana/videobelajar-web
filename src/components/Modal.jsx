@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-// Jendela di tengah layar dengan latar gelap. Tutup dengan klik di luar atau tombol Esc.
+
 export default function Modal({ judul, onTutup, children }) {
   useEffect(() => {
     const tekan = (e) => {

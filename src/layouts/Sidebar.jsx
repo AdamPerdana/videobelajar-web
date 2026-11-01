@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Ikon from '../components/Ikon';
 import { pilihanBidang, pilihanHarga, pilihanDurasi } from '../data/courses';
 
-// Satu kelompok filter yang bisa dibuka-tutup
+
 function KelompokFilter({ ikon, judul, children }) {
   const [terbuka, setTerbuka] = useState(true);
 
@@ -41,10 +41,10 @@ function Pilihan({ jenis, nama, label, dipilih, onChange }) {
   );
 }
 
-// Panel filter di halaman Kategori.
-// filter: { bidang: [], harga: [], durasi: '' }
+
+
 export default function Sidebar({ filter, onUbah, onReset }) {
-  // Tambah atau buang satu nilai dari daftar pilihan (checkbox)
+  
   const ganti = (kunci, nilai) => {
     const lama = filter[kunci];
     const baru = lama.includes(nilai) ? lama.filter((n) => n !== nilai) : [...lama, nilai];

@@ -12,7 +12,7 @@ import GoogleButton from '../components/GoogleButton';
 export default function Register() {
   const navigate = useNavigate();
   const { sudahLogin, login } = useAuth();
-  // Setelah daftar selalu masuk ke Beranda
+  
   const tujuan = '/';
   const [formData, setFormData] = useState({
     nama: '',
@@ -23,18 +23,18 @@ export default function Register() {
     konfirmasiPassword: '',
   });
   const [errors, setErrors] = useState({});
-  const [galat, setGalat] = useState(''); // pesan error dari API (email sudah terdaftar, server mati)
+  const [galat, setGalat] = useState(''); 
   const [memuat, setMemuat] = useState(false);
 
   const handleChange = (e) => {
     const { name } = e.target;
     let { value } = e.target;
 
-    // Nomor HP hanya boleh angka
+    
     if (name === 'noHp') value = value.replace(/\D/g, '');
 
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' }); // hapus error saat user mengetik lagi
+    setErrors({ ...errors, [name]: '' }); 
     setGalat('');
   };
 
@@ -74,7 +74,7 @@ export default function Register() {
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    // Daftar lewat API (POST /users). Konfirmasi kata sandi tidak ikut dikirim.
+    
     setMemuat(true);
     setGalat('');
     try {

@@ -4,10 +4,6 @@ import Gambar from './Gambar';
 import Ikon from './Ikon';
 import { kelompokMetode } from '../data/payment';
 
-// Daftar metode pembayaran yang dikelompokkan dan bisa dipilih.
-// terpilih    : id metode yang sedang dipilih
-// onPilih     : dipanggil dengan id metode saat diklik
-// awalTerbuka : semua kelompok langsung terbuka (halaman Checkout)
 export default function PaymentMethodList({ terpilih, onPilih, awalTerbuka = false }) {
   return (
     <div className="flex flex-col gap-3">

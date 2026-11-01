@@ -11,16 +11,16 @@ export default {
       },
       colors: {
         brandGreen: {
-          DEFAULT: '#3ECF4C', // Primary Green
+          DEFAULT: '#3ECF4C', 
           hover: '#36B843',
           light: '#E8F9EA',
         },
         brandYellow: {
-          DEFAULT: '#FFC107', // Secondary Yellow
+          DEFAULT: '#FFC107', 
           light: '#FFF8E1',
         },
         brandOrange: {
-          DEFAULT: '#F26522', // Logo Brand
+          DEFAULT: '#F26522', 
         },
       },
     },

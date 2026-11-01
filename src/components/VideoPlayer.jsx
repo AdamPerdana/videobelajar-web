@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import Ikon from './Ikon';
 
-// Kotak pemutar video.
-// src       : alamat file video. Kalau kosong, tampil kotak gelap dengan tombol putar.
-// onSelesai : dipanggil saat video habis ditonton (atau tombol putar ditekan kalau video belum ada)
+
 export default function VideoPlayer({ src, onSelesai }) {
   const [ditekan, setDitekan] = useState(false);
 

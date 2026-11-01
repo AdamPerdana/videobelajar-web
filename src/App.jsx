@@ -17,7 +17,7 @@ import Certificate from './pages/Certificate';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-// Setiap pindah halaman: gulir kembali ke atas, dan lupakan tanda "baru keluar"
+
 function GulirKeAtas() {
   const { pathname } = useLocation();
   const { lupakanKeluar } = useAuth();

@@ -15,8 +15,8 @@ const semuaItem = bagianModul.flatMap((b) => b.item);
 const progresKosong = { selesai: [], hasil: {}, review: null };
 const isi = 'px-4 md:px-10 xl:pl-[120px] xl:pr-12 py-8 md:py-10';
 
-// Progres belajar disimpan di browser (localStorage) supaya tidak hilang saat halaman dimuat ulang.
-// TODO: ganti dengan data dari API.
+
+
 function muatProgres(kunci) {
   try {
     return { ...progresKosong, ...JSON.parse(localStorage.getItem(kunci)) };
@@ -25,7 +25,7 @@ function muatProgres(kunci) {
   }
 }
 
-// Jendela "Tulis Review Terbaikmu!"
+
 function ModalReview({ awal, onTutup, onKirim }) {
   const [bintang, setBintang] = useState(awal?.bintang || 0);
   const [teks, setTeks] = useState(awal?.teks || '');
@@ -89,12 +89,12 @@ export default function Learn() {
     try {
       localStorage.setItem(kunci, JSON.stringify(progres));
     } catch {
-      // Penyimpanan browser tidak tersedia, progres hanya bertahan selama halaman terbuka
+      
     }
   }, [kunci, progres]);
 
-  // Modul yang dibuka diambil dari alamat (?m=...). Kalau belum ada, mulai dari modul
-  // pertama yang belum selesai.
+  
+  
   const aktif =
     semuaItem.find((i) => i.id === params.get('m')) ||
     semuaItem.find((i) => !progres.selesai.includes(i.id)) ||
@@ -151,7 +151,7 @@ export default function Learn() {
       }
     >
       {adalahTes ? (
-        // key membuat tes dimulai dari awal setiap pindah ke item tes lain
+        
         <QuizRunner
           key={aktif.id}
           item={aktif}
@@ -204,7 +204,7 @@ export default function Learn() {
           awal={progres.review}
           onTutup={() => setReviewTerbuka(false)}
           onKirim={(review) => {
-            // TODO: kirim review ke API
+            
             setProgres((lama) => ({ ...lama, review }));
             setReviewTerbuka(false);
           }}

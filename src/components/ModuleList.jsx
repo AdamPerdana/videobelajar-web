@@ -3,20 +3,15 @@ import Ikon from './Ikon';
 
 const ikonJenis = { video: 'putar', rangkuman: 'buku', pretest: 'ujian', quiz: 'ujian', ujian: 'ujian' };
 
-// "12 Menit" untuk video dan rangkuman, "10 Pertanyaan" untuk tes
 function keterangan(item) {
   return item.jumlahSoal ? `${item.jumlahSoal} Pertanyaan` : `${item.durasi} Menit`;
 }
 
-// Daftar modul di sisi kanan ruang belajar.
-// bagian  : daftar bagian beserta item-nya (lihat src/data/learning.js)
-// aktifId : id item yang sedang dibuka
-// selesai : daftar id item yang sudah selesai
 export default function ModuleList({ bagian, aktifId, selesai, onPilih, onReview, reviewTerkirim }) {
   const bagianAktif = bagian.find((b) => b.item.some((i) => i.id === aktifId));
   const [terbuka, setTerbuka] = useState({ [bagianAktif?.id]: true });
 
-  // Kalau pindah ke item di bagian lain, bagian itu ikut dibuka
+ 
   useEffect(() => {
     if (bagianAktif) setTerbuka((lama) => ({ ...lama, [bagianAktif.id]: true }));
   }, [bagianAktif?.id]);

@@ -1,21 +1,21 @@
 import axios from 'axios';
 
-// Semua panggilan API (MockAPI) untuk akun dan foto profil ada di sini.
-// URL dasar diambil dari file .env (VITE_API_URL), tidak ditulis langsung di kode.
-//   resource "users": akun (register, login, ubah profil)
-//   resource "foto" : foto profil, satu baris per akun { userId, avatar }
+
+
+
+
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL, timeout: 10000 });
 
-// Kata sandi tidak boleh ikut disimpan di state / localStorage
+
 function tanpaPassword(user) {
   const salinan = { ...user };
   delete salinan.password;
   return salinan;
 }
 
-// GET /users?email=...
-// Filter MockAPI itu pencarian sebagian, jadi hasilnya dicocokkan lagi secara persis.
-// Kalau tidak ada yang cocok MockAPI membalas 404, itu kita anggap daftar kosong.
+
+
+
 async function cariByEmail(email) {
   try {
     const { data } = await api.get('/users', { params: { email } });
@@ -26,18 +26,18 @@ async function cariByEmail(email) {
   }
 }
 
-// GET /foto?userId=...  -> foto milik akun ini, atau null kalau belum punya
+
 async function cariFoto(userId) {
   try {
     const { data } = await api.get('/foto', { params: { userId } });
     return data.find((f) => String(f.userId) === String(userId)) || null;
   } catch {
-    // Belum punya foto (404) atau resource "foto" belum dibuat: login tetap jalan tanpa foto
+    
     return null;
   }
 }
 
-// LOGIN: GET lalu cocokkan kata sandi, sekalian ambil foto profilnya
+
 export async function masukUser(email, password) {
   const hasil = await cariByEmail(email);
   const user = hasil.find((u) => u.password === password);
@@ -46,7 +46,7 @@ export async function masukUser(email, password) {
   return { ...tanpaPassword(user), foto: foto?.avatar ?? null, fotoId: foto?.id ?? null };
 }
 
-// REGISTER: cek email belum dipakai, lalu POST (ADD)
+
 export async function daftarUser(data) {
   const sudahAda = await cariByEmail(data.email);
   if (sudahAda.length > 0) throw new Error('E-Mail sudah terdaftar');
@@ -58,9 +58,7 @@ export async function daftarUser(data) {
   }
 }
 
-// UPDATE profil: PUT /users/:id
-// Data lama diambil dulu lalu digabung, supaya kolom lain (misalnya kata sandi)
-// tidak ikut hilang kalau PUT menimpa seluruh data.
+
 export async function ubahUser(id, perubahan) {
   let lama;
   try {
@@ -82,7 +80,7 @@ export async function ubahUser(id, perubahan) {
   }
 }
 
-// ADD / UPDATE foto: POST /foto kalau belum punya, PUT /foto/:id kalau sudah
+
 export async function simpanFoto(userId, avatar, fotoId) {
   try {
     const { data } = fotoId
@@ -94,7 +92,7 @@ export async function simpanFoto(userId, avatar, fotoId) {
   }
 }
 
-// DELETE foto: DELETE /foto/:id
+
 export async function hapusFoto(fotoId) {
   try {
     await api.delete(`/foto/${fotoId}`);

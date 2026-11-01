@@ -1,8 +1,8 @@
 import React from 'react';
 import { gambar } from '../assets/images';
 
-// Logo videobelajar. Memakai file src/assets/VideoBelajarLogo.(png/svg) kalau ada,
-// kalau belum ada tampil sebagai teks.
+
+
 export default function Logo({ className = '' }) {
   const src = gambar('VideoBelajarLogo');
 

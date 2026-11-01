@@ -3,9 +3,7 @@ import Ikon from './Ikon';
 
 const daftarLangkah = ['Pilih Metode', 'Bayar', 'Selesai'];
 
-// Penanda langkah pembayaran di navbar.
-// aktif    : langkah yang sedang berjalan (1, 2, atau 3)
-// tertunda : true kalau pembayaran belum beres, garis terakhir tetap abu-abu
+
 export default function Stepper({ aktif = 1, tertunda = false }) {
   return (
     <ol className="flex items-center gap-2 sm:gap-3">

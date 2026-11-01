@@ -6,8 +6,7 @@ import { hargaRibuan } from '../data/courses';
 import { sudahDimiliki } from '../data/account';
 import { useAuth } from '../context/AuthContext';
 
-// Kartu kelas. Diklik -> halaman detail kelas.
-// Kalau sudah login dan kelasnya sudah dibeli -> langsung ke ruang belajar.
+
 export default function CourseCard({ kelas }) {
   const { sudahLogin } = useAuth();
   const tujuan = sudahLogin && sudahDimiliki(kelas.id) ? `/belajar/${kelas.id}` : `/kelas/${kelas.id}`;

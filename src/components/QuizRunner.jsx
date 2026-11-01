@@ -9,7 +9,7 @@ const isi = 'px-4 md:px-10 xl:pl-[120px] xl:pr-12 py-8 md:py-10';
 const judul = 'font-heading font-semibold text-xl sm:text-2xl leading-[1.2] text-textPrimary';
 const teks = 'text-base sm:text-lg tracking-[0.2px] text-textSecondary';
 
-// "23 September 2022, 10:20 AM"
+
 function formatTanggal(waktu) {
   const d = new Date(waktu);
   const tanggal = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -17,7 +17,7 @@ function formatTanggal(waktu) {
   return `${tanggal}, ${jam}`;
 }
 
-// ---------- Tahap 1: aturan ----------
+
 function Aturan({ aturan, onMulai }) {
   return (
     <>
@@ -43,10 +43,10 @@ function Aturan({ aturan, onMulai }) {
   );
 }
 
-// ---------- Tahap 2: mengerjakan soal ----------
+
 function Soal({ aturan, soal, onSelesai }) {
-  const [nomor, setNomor] = useState(0);            // soal yang sedang dibuka (mulai dari 0)
-  const [jawaban, setJawaban] = useState({});       // { nomorSoal: urutanPilihan }
+  const [nomor, setNomor] = useState(0);            
+  const [jawaban, setJawaban] = useState({});       
   const [konfirmasi, setKonfirmasi] = useState(false);
 
   const sekarang = soal[nomor];
@@ -170,7 +170,7 @@ function Soal({ aturan, soal, onSelesai }) {
   );
 }
 
-// ---------- Tahap 3: hasil ----------
+
 function Hasil({ aturan, hasil, onUlangi }) {
   const nilai = Math.round((hasil.benar / hasil.jumlah) * 100);
   const lulus = aturan.nilaiLulus === null || nilai >= aturan.nilaiLulus;
@@ -240,9 +240,7 @@ function Hasil({ aturan, hasil, onUlangi }) {
   );
 }
 
-// Satu tes utuh (pretest, quiz, atau ujian akhir): aturan -> soal -> hasil.
-// hasil     : hasil tes sebelumnya kalau sudah pernah dikerjakan
-// onSelesai : dipanggil dengan { benar, jumlah, waktu } dan status lulus
+
 export default function QuizRunner({ item, hasil, onSelesai }) {
   const aturan = aturanTes[item.jenis];
   const [tahap, setTahap] = useState(hasil ? 'hasil' : 'aturan');
@@ -265,6 +263,6 @@ export default function QuizRunner({ item, hasil, onSelesai }) {
     );
   }
 
-  // Sesuai flow Figma: "Ulangi" kembali ke halaman Aturan dulu
+  
   return <Hasil aturan={aturan} hasil={hasil} onUlangi={() => setTahap('aturan')} />;
 }

@@ -1,8 +1,6 @@
 import React from 'react';
 import { rupiah } from '../data/payment';
 
-// Rincian biaya + total.
-// baris: [{ label: 'Biaya Admin', nilai: 7000 }, ...]
 export default function OrderSummary({ judul = 'Ringkasan Pesanan', baris }) {
   const total = baris.reduce((jumlah, b) => jumlah + b.nilai, 0);
 

@@ -4,9 +4,9 @@ import Container from './Container';
 import Logo from './Logo';
 import Ikon from '../components/Ikon';
 
-// Navbar: logo di kiri, isi bebas di kanan (menu, stepper, atau kosong).
-// menuHp: kalau diisi, di layar HP isi kanan diganti ikon garis tiga,
-//         dan menuHp tampil sebagai daftar selebar layar saat ikon ditekan.
+
+
+
 export default function Navbar({ children, menuHp }) {
   const [terbuka, setTerbuka] = useState(false);
 

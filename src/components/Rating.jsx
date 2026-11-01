@@ -1,7 +1,7 @@
 import React from 'react';
 import Ikon from './Ikon';
 
-// Lima bintang + teks "3.5 (86)". Bintang terisi sesuai nilai (boleh setengah).
+
 export default function Rating({ nilai, jumlah, terang = false }) {
   const persen = Math.max(0, Math.min(100, (nilai / 5) * 100));
   const lima = [1, 2, 3, 4, 5];

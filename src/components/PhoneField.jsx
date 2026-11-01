@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Bendera digambar pakai SVG supaya tampil sama di semua perangkat
-// (emoji bendera tidak muncul di Windows).
 function BenderaIndonesia() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
@@ -11,8 +9,6 @@ function BenderaIndonesia() {
   );
 }
 
-// Untuk menambah negara lain: tambahkan baris baru di sini
-// beserta komponen benderanya.
 const daftarKodeNegara = [
   { kode: '+62', nama: 'Indonesia', Bendera: BenderaIndonesia },
 ];
@@ -20,9 +16,9 @@ const daftarKodeNegara = [
 export default function PhoneField({
   label,
   name,
-  kodeNegara = '+62',     // kode negara yang sedang dipilih
-  onKodeChange,           // dipanggil saat kode negara diganti
-  value,                  // nomor HP (tanpa kode negara)
+  kodeNegara = '+62',     
+  onKodeChange,           
+  value,                  
   onChange,
   error = '',
   required = false,

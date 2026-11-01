@@ -1,15 +1,14 @@
 import React from 'react';
 import { gambar } from '../assets/images';
 
-// Tempat gambar. Kalau file "nama" sudah ada di src/assets, gambarnya tampil.
-// Kalau belum, tampil kotak abu-abu berisi nama file yang ditunggu.
+
 export default function Gambar({
-  nama,               // nama file tanpa ekstensi, contoh: "course-1"
-  cadangan,           // nama file lain yang dipakai kalau "nama" belum ada
+  nama,               
+  cadangan,           
   alt = '',
-  className = '',     // ukuran dan sudut diatur dari sini
-  fit = 'cover',      // cover (memenuhi kotak) | contain (utuh, tidak terpotong)
-  label = true,       // tampilkan nama file di kotak kosong
+  className = '',     
+  fit = 'cover',      
+  label = true,       
 }) {
   const src = gambar(nama) || gambar(cadangan);
 
@@ -35,7 +34,7 @@ export default function Gambar({
   );
 }
 
-// Kotak berlatar gambar gelap dengan isi di atasnya (hero, newsletter).
+
 export function LatarGambar({ nama, cadangan, className = '', children }) {
   const src = gambar(nama) || gambar(cadangan);
 

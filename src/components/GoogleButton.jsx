@@ -12,7 +12,7 @@ function IkonGoogle() {
   );
 }
 
-// Dipakai di Login ("Masuk dengan Google") dan Register ("Daftar dengan Google")
+
 export default function GoogleButton({ children, onClick }) {
   return (
     <Button variant="outline" size="lg" fullWidth onClick={onClick}>

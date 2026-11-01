@@ -1,7 +1,6 @@
 import React from 'react';
 
-// Deretan tab dengan garis bawah oranye di tab yang aktif.
-// daftar: [{ label: 'Semua Kelas', nilai: 'semua' }, ...]
+
 export default function Tabs({ daftar, aktif, onGanti }) {
   return (
     <div role="tablist" className="flex gap-6 sm:gap-9 overflow-x-auto">

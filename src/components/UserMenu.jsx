@@ -5,7 +5,7 @@ import Ikon from './Ikon';
 import { useAuth } from '../context/AuthContext';
 import { menuAkun } from '../data/account';
 
-// Foto profil di navbar. Diklik -> menu Profil Saya, Kelas Saya, Pesanan Saya, Keluar.
+
 export default function UserMenu() {
   const [terbuka, setTerbuka] = useState(false);
   const { pengguna, logout } = useAuth();

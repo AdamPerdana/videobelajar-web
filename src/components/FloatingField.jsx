@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Kotak isian dengan label kecil yang menempel di garis atas (halaman Profil).
-// Kalau "pilihan" diisi, tampil sebagai dropdown.
 export default function FloatingField({
   label,
   name,
@@ -9,7 +7,7 @@ export default function FloatingField({
   value,
   onChange,
   error = '',
-  pilihan,              // contoh: ['+62', '+60']
+  pilihan,              
   inputMode,
   autoComplete,
 }) {

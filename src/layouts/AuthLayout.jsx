@@ -1,8 +1,8 @@
 import React from 'react';
 import Navbar from './Navbar';
 
-// Kerangka bersama halaman Login & Register:
-// navbar + latar krem + kartu putih di tengah berisi judul dan isi form.
+
+
 export default function AuthLayout({ judul, deskripsi, children }) {
   return (
     <div className="min-h-screen flex flex-col bg-cream font-sans">

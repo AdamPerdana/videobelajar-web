@@ -67,7 +67,7 @@ export default function Orders() {
   const halamanAktif = Math.min(halaman, jumlahHalaman);
   const tampil = hasil.slice((halamanAktif - 1) * perHalaman, halamanAktif * perHalaman);
 
-  // Setiap tab, pencarian, atau urutan berubah, kembali ke halaman 1
+  
   const ubah = (setter) => (nilai) => {
     setter(nilai);
     setHalaman(1);

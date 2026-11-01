@@ -1,5 +1,3 @@
-// DATA CONTOH untuk halaman akun (Profil, Kelas Saya, Pesanan Saya).
-// Isinya mengikuti desain Figma. Nanti diganti data dari API.
 
 export const pengguna = {
   nama: 'Jennie Ruby Jane',
@@ -15,9 +13,7 @@ export const menuAkun = [
   { label: 'Pesanan Saya', tujuan: '/pesanan', ikon: 'keranjang' },
 ];
 
-// ---------- Pesanan Saya ----------
 
-// status: 'berhasil' | 'gagal' | 'menunggu'
 const pesananDasar = {
   kelasId: 2,
   judul: 'Belajar Microsoft Office dan Google Workspace untuk Pemula',
@@ -55,7 +51,7 @@ export const urutanPesanan = [
   { id: 'harga-rendah', label: 'Harga Rendah', banding: (a, b) => a.harga - b.harga },
 ];
 
-// "2023-06-10T14:17" -> "10 Juni 2023, 14.17"
+
 export function formatWaktu(waktu) {
   const d = new Date(waktu);
   const tanggal = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -63,7 +59,7 @@ export function formatWaktu(waktu) {
   return `${tanggal}, ${jam}`;
 }
 
-// ---------- Kelas Saya ----------
+
 
 const kelasDasar = {
   judul: 'Big 4 Auditor Financial Analyst',
@@ -75,7 +71,7 @@ const kelasDasar = {
   durasiMenit: 360,
 };
 
-// modulSelesai menentukan progres dan status (selesai kalau semua modul tuntas)
+
 export const kelasSaya = [
   { ...kelasDasar, id: 6, modulSelesai: 12 },
   { ...kelasDasar, id: 7, modulSelesai: 2 },
@@ -83,7 +79,7 @@ export const kelasSaya = [
   { ...kelasDasar, id: 9, modulSelesai: 7 },
 ];
 
-// true kalau kelas dengan id ini sudah dibeli (ada di Kelas Saya)
+
 export function sudahDimiliki(idKelas) {
   return kelasSaya.some((k) => k.id === idKelas);
 }

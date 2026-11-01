@@ -9,7 +9,7 @@ const isi = {
   tertunda: { judul: 'Pembayaran Tertunda!', gambar: 'payment-pending' },
 };
 
-// Langkah 3: hasil pembayaran. Alamat: /pembayaran/berhasil atau /pembayaran/tertunda
+
 export default function PaymentStatus() {
   const { status } = useParams();
   const navigate = useNavigate();

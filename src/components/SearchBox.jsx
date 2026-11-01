@@ -1,7 +1,6 @@
 import React from 'react';
 import Ikon from './Ikon';
 
-// Kotak pencarian "Cari Kelas"
 export default function SearchBox({ nilai, onUbah, placeholder = 'Cari Kelas', className = '' }) {
   return (
     <label

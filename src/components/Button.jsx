@@ -2,9 +2,9 @@ import React from 'react';
 
 export default function Button({
   children,
-  variant = 'primary',  // primary | secondary | outline | outlinePrimary | warning
-  size = 'md',          // sm | md | lg
-  type = 'button',      // button | submit
+  variant = 'primary',  
+  size = 'md',          
+  type = 'button',      
   fullWidth = false,
   disabled = false,
   onClick,
@@ -20,8 +20,8 @@ export default function Button({
   const daftarUkuran = {
     sm: 'h-8 px-3 text-xs',
     md: 'h-9 px-4 text-sm',
-    // Ukuran tombol di Figma. Di HP teks dan jarak sampingnya sedikit lebih kecil,
-    // dan tombol boleh meninggi kalau teksnya turun ke baris kedua.
+    
+    
     lg: 'min-h-[42px] px-4 sm:px-[26px] py-2 text-sm sm:text-base tracking-[0.2px]',
   };
 

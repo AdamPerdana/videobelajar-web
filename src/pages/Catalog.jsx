@@ -17,7 +17,7 @@ export default function Catalog() {
   const [kataCari, setKataCari] = useState('');
   const [halaman, setHalaman] = useState(1);
 
-  // 1. Saring
+  
   let hasil = daftarKelas.filter((kelas) => {
     if (filter.bidang.length > 0 && !filter.bidang.includes(kelas.kategori)) return false;
 
@@ -36,16 +36,16 @@ export default function Catalog() {
     return true;
   });
 
-  // 2. Urutkan
+  
   const urutanAktif = pilihanUrutan.find((u) => u.id === urutan);
   if (urutanAktif) hasil = [...hasil].sort(urutanAktif.banding);
 
-  // 3. Potong per halaman
+  
   const jumlahHalaman = Math.max(1, Math.ceil(hasil.length / perHalaman));
   const halamanAktif = Math.min(halaman, jumlahHalaman);
   const kelasTampil = hasil.slice((halamanAktif - 1) * perHalaman, halamanAktif * perHalaman);
 
-  // Setiap filter berubah, kembali ke halaman 1
+  
   const ubahFilter = (baru) => {
     setFilter(baru);
     setHalaman(1);

@@ -14,7 +14,7 @@ export default function Certificate() {
   const fileSertifikat = gambar(sertifikat.gambar);
 
   const unduh = () => {
-    // TODO: ganti dengan file sertifikat dari API (PDF atas nama pengguna)
+    
     if (!fileSertifikat) return;
     const tautan = document.createElement('a');
     tautan.href = fileSertifikat;

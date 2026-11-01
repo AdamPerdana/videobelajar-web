@@ -1,4 +1,4 @@
-// DATA CONTOH untuk alur pembayaran. Nanti diganti data dari API.
+
 
 export const kelompokMetode = [
   {
@@ -48,7 +48,7 @@ export function cariMetode(id) {
   return cariMetode(metodeBawaan);
 }
 
-// Angka mengikuti desain Figma
+
 export const pesanan = {
   hargaKelas: 767500,
   biayaAdmin: 7000,
@@ -56,10 +56,10 @@ export const pesanan = {
 
 export const nomorPembayaran = '11739 081234567890';
 
-// Lama waktu bayar dalam detik (00:50:55 seperti di desain)
+
 export const batasWaktuBayar = 50 * 60 + 55;
 
-// Tata cara BCA: teksnya persis dari desain Figma
+
 const tataCaraBca = [
   {
     judul: 'ATM BCA',
@@ -98,7 +98,7 @@ const tataCaraBca = [
   },
 ];
 
-// Tata cara untuk metode lain: teks umum (belum ada di desain), silakan disesuaikan
+
 function tataCaraBankLain(bank) {
   return [
     {
@@ -134,7 +134,7 @@ function tataCaraBankLain(bank) {
   ];
 }
 
-// Mengembalikan daftar tata cara sesuai metode yang dipilih
+
 export function tataCaraUntuk(metode) {
   if (metode.id === 'bca') return tataCaraBca;
   if (metode.jenis === 'bank') return tataCaraBankLain(metode.singkat);
@@ -167,7 +167,7 @@ export function tataCaraUntuk(metode) {
   ];
 }
 
-// 767500 -> "Rp 767.500"
+
 export function rupiah(nilai) {
   return `Rp ${nilai.toLocaleString('id-ID')}`;
 }

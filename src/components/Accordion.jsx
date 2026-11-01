@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Ikon from './Ikon';
 
-// Judul yang bisa dibuka-tutup.
-// varian "kotak": judul di dalam kotak bergaris (metode pembayaran, tata cara)
-// varian "teks" : judul hijau tanpa kotak (silabus di detail kelas)
-// varian "kartu": judul dan isi berada dalam satu kotak (tata cara pembayaran)
+
+
+
+
 export default function Accordion({ judul, awalTerbuka = false, varian = 'kotak', children }) {
   const [terbuka, setTerbuka] = useState(awalTerbuka);
 

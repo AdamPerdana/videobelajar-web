@@ -7,9 +7,7 @@ import Gambar from './Gambar';
 const pilihanKategori = ['Pemasaran', 'Desain', 'Pengembangan Diri', 'Bisnis Manajemen', 'Digital & Teknologi'];
 const pilihanGambar = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-// Form tambah / ubah kelas. Dipakai dua mode:
-// - kelasAwal = null  -> Create (tambah kelas baru)
-// - kelasAwal = {...} -> Update (ubah kelas yang dipilih)
+
 export default function CourseFormModal({ kelasAwal, onSimpan, onTutup }) {
   const modeUbah = Boolean(kelasAwal);
 

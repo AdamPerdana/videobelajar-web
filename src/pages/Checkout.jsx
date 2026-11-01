@@ -10,7 +10,7 @@ import { metodeBawaan, pesanan } from '../data/payment';
 
 const kartu = 'p-5 sm:p-6 bg-white border border-borderField rounded-[10px]';
 
-// Langkah 1: pilih metode pembayaran
+
 export default function Checkout() {
   const { id } = useParams();
   const navigate = useNavigate();

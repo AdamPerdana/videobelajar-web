@@ -14,7 +14,7 @@ import { useAuth } from '../context/AuthContext';
 const kartu = 'flex flex-col gap-5 p-5 sm:p-6 bg-white border border-borderField rounded-[10px]';
 const judulBagian = 'font-heading font-semibold text-xl leading-[1.2] text-textPrimary';
 
-// Kartu orang (tutor atau pemberi review)
+
 function KartuOrang({ avatar, nama, keterangan, isi, rating }) {
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-5 border border-borderField rounded-[10px]">
@@ -34,12 +34,12 @@ function KartuOrang({ avatar, nama, keterangan, isi, rating }) {
 export default function CourseDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const kelas = detailKelas; // TODO: ambil detail kelas berdasarkan id dari API
+  const kelas = detailKelas; 
   const kelasLain = daftarKelas.filter((k) => String(k.id) !== id).slice(-3);
   const { sudahLogin } = useAuth();
   const [tersalin, setTersalin] = useState(false);
 
-  // Bagikan lewat menu bagikan milik HP kalau ada, kalau tidak salin tautannya
+  
   const bagikan = async () => {
     const tautan = window.location.href;
     try {
@@ -51,7 +51,7 @@ export default function CourseDetail() {
       setTersalin(true);
       setTimeout(() => setTersalin(false), 2000);
     } catch {
-      // Dibatalkan pengguna atau browser menolak, tidak perlu melakukan apa-apa
+      
     }
   };
 

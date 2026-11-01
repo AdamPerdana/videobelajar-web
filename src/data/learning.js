@@ -1,9 +1,9 @@
-// DATA CONTOH untuk ruang belajar (halaman /belajar/:id).
-// Isinya mengikuti desain Figma. Nanti diganti data dari API.
+
+
 
 export const kelasBelajar = {
   judul: 'Foundations of User Experience Design',
-  // Info yang tampil di bawah video
+  
   materi: {
     judul: 'Praktikkan Skill dengan Technical Book',
     deskripsi: 'Pelajari dan praktikkan skill teknis dalam berbagai industri dengan Technical Book Riselearn',
@@ -13,8 +13,8 @@ export const kelasBelajar = {
   },
 };
 
-// jenis: 'video' | 'rangkuman' | 'pretest' | 'quiz' | 'ujian'
-// Untuk video: isi "video" dengan alamat file video kalau sudah ada.
+
+
 const video = (id) => ({ id, jenis: 'video', judul: 'Video: Introduction to HR', durasi: 12, video: '' });
 
 export const bagianModul = [
@@ -46,13 +46,13 @@ export const bagianModul = [
   },
 ];
 
-// Teks dan aturan untuk tiap jenis tes
+
 export const aturanTes = {
   pretest: {
     nama: 'Pretest',
     namaKecil: 'pretest',
     tombolMulai: 'Mulai Pre-Test',
-    nilaiLulus: null, // pretest tidak punya syarat lulus
+    nilaiLulus: null, 
     pembuka: 'Kerjakan pretest dengan sebaik mungkin untuk mengukur pemahaman awalmu terkait materi yang akan kamu pelajari',
     syarat: ['Syarat Nilai Kelulusan: -', 'Durasi Ujian: 5 Menit'],
     penutup: 'Jangan khawatir, total skor tidak akan memengaruhi kelulusan dan penilaian akhirmu dalam rangkaian kelas ini',
@@ -80,7 +80,7 @@ export const aturanTes = {
   },
 };
 
-// Soal contoh: di desain semua soal sama, jadi di sini juga diulang.
+
 const soalContoh = {
   pertanyaan:
     'Memikirkan dan mengantisipasi secara teliti adanya user secara tidak sengaja mengutak-atik konfigurasi, namun dapat diatasi dengan membuat default yang mengurangi kepanikan pada user adalah pengertian dari ...',
@@ -90,14 +90,14 @@ const soalContoh = {
     'Memastikan bahwa sistem berjalan sesuai dengan apa yang terjadi saat itu juga',
     'Menciptakan konsistensi dan menggunakan elemen UI umum',
   ],
-  benar: 0, // urutan jawaban yang benar (mulai dari 0)
+  benar: 0, 
 };
 
 export function ambilSoal(jumlah) {
   return Array.from({ length: jumlah }, (_, i) => ({ ...soalContoh, id: i + 1 }));
 }
 
-// Sertifikat
+
 export const sertifikat = {
   gambar: 'certificate',
   kategori: 'Desain',

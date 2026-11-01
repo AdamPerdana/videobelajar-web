@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Garis pemisah dengan teks di tengah, contoh: ---- atau ----
+
 export default function Divider({ children }) {
   return (
     <div className="flex items-center w-full">

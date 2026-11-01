@@ -3,8 +3,8 @@ import Navbar from './Navbar';
 import Container from './Container';
 import Stepper from '../components/Stepper';
 
-// Kerangka halaman pembayaran: navbar dengan penanda langkah, tanpa footer.
-// bawahNavbar: isi tambahan tepat di bawah navbar (contoh: hitung mundur).
+
+
 export default function CheckoutLayout({ langkah, tertunda = false, bawahNavbar, children }) {
   return (
     <div className="min-h-screen flex flex-col bg-cream font-sans text-textPrimary">

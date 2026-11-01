@@ -10,7 +10,7 @@ import { cariMetode, pesanan } from '../data/payment';
 
 const kartu = 'p-5 sm:p-6 bg-white border border-borderField rounded-[10px]';
 
-// Ubah metode pembayaran (dari halaman Bayar)
+
 export default function ChangeMethod() {
   const navigate = useNavigate();
   const [params] = useSearchParams();

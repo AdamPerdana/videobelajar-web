@@ -5,10 +5,6 @@ import Chip from './Chip';
 import Button from './Button';
 import { hargaRibuan } from '../data/courses';
 
-// Kartu ringkasan kelas di sisi kanan (Detail Kelas dan halaman pembayaran).
-// denganGambar : tampilkan gambar kelas di atas (halaman pembayaran)
-// onBeli       : kalau diisi, tombol "Beli Sekarang" dan teks penawaran tampil (Detail Kelas)
-// onBagikan    : kalau diisi, tombol "Bagikan Kelas" tampil di bawahnya
 export default function CourseInfoCard({ kelas, denganGambar = false, onBeli, onBagikan, labelBagikan = 'Bagikan Kelas' }) {
   return (
     <aside className="flex flex-col gap-5 p-5 sm:p-6 bg-white border border-borderField rounded-[10px]">

@@ -16,29 +16,29 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [terkirim, setTerkirim] = useState(false);
 
-  // READ: data kelas disimpan di state (array object), awalnya dari daftarKelas
+  
   const [kelasList, setKelasList] = useState(daftarKelas);
-  // null = modal tertutup | 'tambah' = form tambah | object kelas = form ubah
+  
   const [formAktif, setFormAktif] = useState(null);
   const [kelasHapus, setKelasHapus] = useState(null);
 
   const kelasTampil =
     tabAktif === 'semua' ? kelasList : kelasList.filter((k) => k.kategori === tabAktif);
 
-  // CREATE
+  
   const tambahKelas = (dataBaru) => {
     const idBaru = kelasList.reduce((maks, k) => Math.max(maks, k.id), 0) + 1;
     setKelasList([...kelasList, { ...dataBaru, id: idBaru, rating: 0, jumlahReview: 0 }]);
     setFormAktif(null);
   };
 
-  // UPDATE
+  
   const ubahKelas = (id, dataBaru) => {
     setKelasList(kelasList.map((k) => (k.id === id ? { ...k, ...dataBaru } : k)));
     setFormAktif(null);
   };
 
-  // DELETE
+  
   const hapusKelas = (id) => {
     setKelasList(kelasList.filter((k) => k.id !== id));
     setKelasHapus(null);
@@ -47,7 +47,7 @@ export default function Home() {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (!/^\S+@\S+\.\S+$/.test(email)) return;
-    // TODO: kirim email ke API newsletter
+    
     console.log('Subscribe:', email);
     setTerkirim(true);
     setEmail('');

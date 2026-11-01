@@ -11,7 +11,7 @@ import { batasWaktuBayar, cariMetode, nomorPembayaran, pesanan, tataCaraUntuk } 
 
 const kartu = 'p-5 sm:p-6 bg-white border border-borderField rounded-[10px]';
 
-// 5 -> "05"
+
 const duaAngka = (n) => String(n).padStart(2, '0');
 
 function HitungMundur({ sisa }) {
@@ -38,7 +38,7 @@ function HitungMundur({ sisa }) {
   );
 }
 
-// Langkah 2: bayar
+
 export default function Payment() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -49,13 +49,13 @@ export default function Payment() {
   const [sisa, setSisa] = useState(batasWaktuBayar);
   const [tersalin, setTersalin] = useState(false);
 
-  // Kurangi sisa waktu tiap detik
+  
   useEffect(() => {
     const timer = setInterval(() => setSisa((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Waktu habis -> pembayaran tertunda
+  
   useEffect(() => {
     if (sisa === 0) navigate('/pembayaran/tertunda', { replace: true });
   }, [sisa, navigate]);
@@ -66,7 +66,7 @@ export default function Payment() {
       setTersalin(true);
       setTimeout(() => setTersalin(false), 2000);
     } catch {
-      // Browser menolak akses clipboard, biarkan user menyalin manual
+      
     }
   };
 

@@ -8,17 +8,17 @@ import { ubahUser, simpanFoto, hapusFoto } from '../services/api/userApi';
 
 const pilihanKode = ['+62'];
 
-// Foto profil dipilih dari gambar yang sudah ada di src/assets (tutor-1 sampai tutor-9)
+
 const pilihanAvatar = Array.from({ length: 9 }, (_, i) => `tutor-${i + 1}`);
 
 export default function Profile() {
-  // "tersimpan" = data yang tampil di atas, "form" = yang sedang diketik
+  
   const { pengguna, perbarui } = useAuth();
   const tersimpan = pengguna;
   const [form, setForm] = useState(pengguna);
   const [errors, setErrors] = useState({});
   const [pesan, setPesan] = useState('');
-  const [galat, setGalat] = useState(''); // pesan error dari API
+  const [galat, setGalat] = useState(''); 
   const [memuat, setMemuat] = useState(false);
   const [pilihFoto, setPilihFoto] = useState(false);
 
@@ -33,7 +33,7 @@ export default function Profile() {
     setGalat('');
   };
 
-  // Menjalankan aksi API dengan status loading dan pesan error yang sama
+  
   const jalankan = async (aksi, pesanBerhasil) => {
     if (!pengguna.id) {
       setGalat('Sesi lama terdeteksi. Silakan keluar lalu masuk lagi.');
@@ -52,14 +52,14 @@ export default function Profile() {
     }
   };
 
-  // ADD / UPDATE foto (POST atau PUT /foto)
+  
   const pilihAvatar = (nama) =>
     jalankan(async () => {
       perbarui(await simpanFoto(pengguna.id, nama, pengguna.fotoId));
       setPilihFoto(false);
     }, 'Foto profil diperbarui.');
 
-  // DELETE foto (DELETE /foto/:id)
+  
   const hapusFotoProfil = () =>
     jalankan(async () => {
       await hapusFoto(pengguna.fotoId);
@@ -86,7 +86,7 @@ export default function Profile() {
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    // UPDATE profil (PUT /users/:id)
+    
     jalankan(async () => {
       perbarui(
         await ubahUser(pengguna.id, {

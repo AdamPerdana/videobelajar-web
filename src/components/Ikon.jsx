@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Ikon berbentuk isi penuh
+
 const ikonIsi = {
   bintang: <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />,
   panahBawah: <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />,
@@ -26,7 +26,7 @@ const ikonIsi = {
   centang: <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />,
 };
 
-// Ikon berbentuk garis
+
 const ikonGaris = {
   jam: (<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>),
   putar: (<><circle cx="12" cy="12" r="9" /><path d="m10 8.5 5.5 3.5-5.5 3.5z" /></>),
@@ -44,8 +44,6 @@ const ikonGaris = {
   twitter: <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />,
 };
 
-// Pemakaian: <Ikon nama="cari" ukuran={24} className="text-textSecondary" />
-// Warna mengikuti warna teks (text-...).
 export default function Ikon({ nama, ukuran = 24, className = '' }) {
   if (ikonIsi[nama]) {
     return (

@@ -5,7 +5,7 @@ import Container from './Container';
 import Ikon from '../components/Ikon';
 import { menuAkun } from '../data/account';
 
-// Kerangka halaman akun: judul + menu di kiri, isi halaman di kartu kanan.
+
 export default function AccountLayout({ judul, deskripsi, children }) {
   return (
     <MainLayout>

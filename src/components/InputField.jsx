@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Ikon mata (kata sandi terlihat)
 function IkonMata() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -9,7 +8,7 @@ function IkonMata() {
   );
 }
 
-// Ikon mata dicoret (kata sandi disembunyikan)
+
 function IkonMataCoret() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -19,14 +18,14 @@ function IkonMataCoret() {
 }
 
 export default function InputField({
-  label,                  // Judul input di atas kotak
-  type = 'text',          // text | email | password | tel
-  name,                   // Nama field (dipakai handleChange)
+  label,                  
+  type = 'text',          
+  name,                   
   placeholder = '',
   value,
   onChange,
-  error = '',             // Pesan error di bawah kotak (jika ada)
-  required = false,       // Tanda bintang (wajib diisi)
+  error = '',             
+  required = false,       
   autoComplete,
 }) {
   const [terlihat, setTerlihat] = useState(false);

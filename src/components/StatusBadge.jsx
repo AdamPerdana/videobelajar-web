@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Label status kecil: Berhasil / Gagal / Belum Bayar / Selesai / Sedang Berjalan
+
 export default function StatusBadge({ warna = 'hijau', children }) {
   const daftarWarna = {
     hijau: 'bg-[#E0FDDF] text-[#38D189]',

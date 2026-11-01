@@ -11,17 +11,17 @@ import GoogleButton from '../components/GoogleButton';
 export default function Login() {
   const navigate = useNavigate();
   const { sudahLogin, login } = useAuth();
-  // Setelah login selalu masuk ke Beranda
+  
   const tujuan = '/';
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
-  const [galat, setGalat] = useState(''); // pesan error dari API (email/sandi salah, server mati)
+  const [galat, setGalat] = useState(''); 
   const [memuat, setMemuat] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' }); // hapus error saat user mengetik lagi
+    setErrors({ ...errors, [name]: '' }); 
     setGalat('');
   };
 
@@ -41,7 +41,7 @@ export default function Login() {
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    // Login lewat API (GET /users?email=...)
+    
     setMemuat(true);
     setGalat('');
     try {
@@ -55,7 +55,7 @@ export default function Login() {
     }
   };
 
-  // Sudah login tidak perlu melihat halaman ini lagi
+  
   if (sudahLogin) return <Navigate to={tujuan} replace />;
 
   return (

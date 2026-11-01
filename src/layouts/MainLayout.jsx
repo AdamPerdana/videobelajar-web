@@ -11,12 +11,12 @@ const tombol = 'inline-flex items-center justify-center h-[42px] px-[26px] round
 const tombolLogin = `${tombol} bg-brandGreen text-white hover:bg-brandGreen-hover`;
 const tombolRegister = `${tombol} bg-white border border-brandGreen text-brandGreen hover:bg-brandGreen-light`;
 
-// Satu baris di menu HP
+
 const barisHp = 'flex items-center gap-2 w-full h-[54px] px-5 border-b border-borderField text-base font-medium tracking-[0.2px] text-left';
 
-// Kerangka halaman utama: navbar, isi, footer.
-// Layar lebar: Kategori + foto profil (sudah login) atau tombol Login/Register (belum login).
-// Layar HP   : ikon garis tiga yang membuka daftar menu.
+
+
+
 export default function MainLayout({ children }) {
   const { sudahLogin, logout } = useAuth();
 
