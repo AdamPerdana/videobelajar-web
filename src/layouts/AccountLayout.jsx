@@ -1,11 +1,10 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import MainLayout from './MainLayout';
 import Container from './Container';
 import Ikon from '../components/Ikon';
 import { menuAkun } from '../data/account';
 
-
+// Kerangka halaman akun: menu samping (Profil, Kelas, Pesanan) dan kotak isi.
 export default function AccountLayout({ judul, deskripsi, children }) {
   return (
     <MainLayout>

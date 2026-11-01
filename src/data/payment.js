@@ -1,4 +1,4 @@
-
+// Data contoh untuk alur pembayaran: metode, biaya, dan tata cara pembayaran.
 
 export const kelompokMetode = [
   {
@@ -48,17 +48,23 @@ export function cariMetode(id) {
   return cariMetode(metodeBawaan);
 }
 
-
 export const pesanan = {
   hargaKelas: 767500,
   biayaAdmin: 7000,
 };
 
+// Baris rincian biaya yang tampil di ringkasan pesanan (Checkout dan Payment)
+export function barisRingkasan(judulKelas) {
+  return [
+    { label: `Video Learning: ${judulKelas}`, nilai: pesanan.hargaKelas },
+    { label: 'Biaya Admin', nilai: pesanan.biayaAdmin },
+  ];
+}
+
 export const nomorPembayaran = '11739 081234567890';
 
-
+// Batas waktu bayar dalam detik (50 menit 55 detik)
 export const batasWaktuBayar = 50 * 60 + 55;
-
 
 const tataCaraBca = [
   {
@@ -98,7 +104,6 @@ const tataCaraBca = [
   },
 ];
 
-
 function tataCaraBankLain(bank) {
   return [
     {
@@ -134,7 +139,6 @@ function tataCaraBankLain(bank) {
   ];
 }
 
-
 export function tataCaraUntuk(metode) {
   if (metode.id === 'bca') return tataCaraBca;
   if (metode.jenis === 'bank') return tataCaraBankLain(metode.singkat);
@@ -165,9 +169,4 @@ export function tataCaraUntuk(metode) {
       ],
     },
   ];
-}
-
-
-export function rupiah(nilai) {
-  return `Rp ${nilai.toLocaleString('id-ID')}`;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import InputField from './InputField';
@@ -7,7 +7,7 @@ import Gambar from './Gambar';
 const pilihanKategori = ['Pemasaran', 'Desain', 'Pengembangan Diri', 'Bisnis Manajemen', 'Digital & Teknologi'];
 const pilihanGambar = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-
+// Form tambah / ubah kelas dalam jendela pop-up. `kelasAwal` null = mode tambah.
 export default function CourseFormModal({ kelasAwal, onSimpan, onTutup }) {
   const modeUbah = Boolean(kelasAwal);
 

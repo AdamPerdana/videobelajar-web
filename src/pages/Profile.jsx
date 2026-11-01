@@ -1,39 +1,42 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AccountLayout from '../layouts/AccountLayout';
 import FloatingField from '../components/FloatingField';
 import Gambar from '../components/Gambar';
 import Button from '../components/Button';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { ubahUser, simpanFoto, hapusFoto } from '../services/api/userApi';
+import { hanyaAngka, kumpulkanError, validasiEmail, validasiNama, validasiNoHp } from '../utils/validation';
 
-const pilihanKode = ['+62'];
+const PILIHAN_KODE = ['+62'];
 
+// Foto yang bisa dipilih: tutor-1 sampai tutor-9
+const PILIHAN_AVATAR = Array.from({ length: 9 }, (_, i) => `tutor-${i + 1}`);
 
-const pilihanAvatar = Array.from({ length: 9 }, (_, i) => `tutor-${i + 1}`);
+const TEKS_TOMBOL =
+  'self-start text-base font-bold tracking-[0.2px] text-tertiary cursor-pointer hover:underline disabled:opacity-60 disabled:cursor-not-allowed';
 
 export default function Profile() {
-  
   const { pengguna, perbarui } = useAuth();
-  const tersimpan = pengguna;
+
   const [form, setForm] = useState(pengguna);
-  const [errors, setErrors] = useState({});
-  const [pesan, setPesan] = useState('');
-  const [galat, setGalat] = useState(''); 
+  const [errors, setErrors] = useState({}); // error per kolom
+  const [pesan, setPesan] = useState(''); // pesan sukses
+  const [galat, setGalat] = useState(''); // pesan gagal
   const [memuat, setMemuat] = useState(false);
   const [pilihFoto, setPilihFoto] = useState(false);
 
   const handleChange = (e) => {
-    const { name } = e.target;
-    let { value } = e.target;
-    if (name === 'noHp') value = value.replace(/\D/g, '');
+    const { name, value } = e.target;
+    const nilai = name === 'noHp' ? hanyaAngka(value) : value;
 
-    setForm({ ...form, [name]: value });
-    setErrors({ ...errors, [name]: '' });
+    setForm((lama) => ({ ...lama, [name]: nilai }));
+    setErrors((lama) => ({ ...lama, [name]: '' }));
     setPesan('');
     setGalat('');
   };
 
-  
+  // Semua aksi yang memanggil API lewat sini, supaya status memuat/pesan/galat diatur
+  // di satu tempat: jalankan `aksi`, lalu tampilkan `pesanBerhasil` atau pesan error.
   const jalankan = async (aksi, pesanBerhasil) => {
     if (!pengguna.id) {
       setGalat('Sesi lama terdeteksi. Silakan keluar lalu masuk lagi.');
@@ -52,14 +55,12 @@ export default function Profile() {
     }
   };
 
-  
   const pilihAvatar = (nama) =>
     jalankan(async () => {
       perbarui(await simpanFoto(pengguna.id, nama, pengguna.fotoId));
       setPilihFoto(false);
     }, 'Foto profil diperbarui.');
 
-  
   const hapusFotoProfil = () =>
     jalankan(async () => {
       await hapusFoto(pengguna.fotoId);
@@ -70,23 +71,14 @@ export default function Profile() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const errorBaru = {};
-    if (!form.nama.trim()) errorBaru.nama = 'Nama lengkap wajib diisi';
-    if (!form.email.trim()) {
-      errorBaru.email = 'E-Mail wajib diisi';
-    } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
-      errorBaru.email = 'Format E-Mail tidak valid';
-    }
-    if (!form.noHp) {
-      errorBaru.noHp = 'No. Hp wajib diisi';
-    } else if (form.noHp.length < 8 || form.noHp.length > 13) {
-      errorBaru.noHp = 'No. Hp harus 8-13 angka';
-    }
-
+    const errorBaru = kumpulkanError({
+      nama: validasiNama(form.nama),
+      email: validasiEmail(form.email),
+      noHp: validasiNoHp(form.noHp),
+    });
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    
     jalankan(async () => {
       perbarui(
         await ubahUser(pengguna.id, {
@@ -99,22 +91,20 @@ export default function Profile() {
     }, 'Profil berhasil disimpan.');
   };
 
-  const teksTombol = 'self-start text-base font-bold tracking-[0.2px] text-tertiary cursor-pointer hover:underline disabled:opacity-60 disabled:cursor-not-allowed';
-
   return (
     <AccountLayout judul="Ubah Profil" deskripsi="Ubah data diri Anda">
       <div className="flex items-center gap-4 pb-6 border-b border-borderField">
-        <Gambar nama={tersimpan.foto} cadangan="avatar-user" alt="Foto profil" className="w-[92px] h-[92px] rounded" />
+        <Gambar nama={pengguna.foto} cadangan="avatar-user" alt="Foto profil" className="w-[92px] h-[92px] rounded" />
 
         <div className="min-w-0 flex flex-col gap-2">
-          <p className="font-heading font-semibold text-xl leading-[1.2] text-textPrimary">{tersimpan.nama}</p>
-          <p className="text-lg tracking-[0.2px] text-textPrimary break-all">{tersimpan.email}</p>
+          <p className="font-heading font-semibold text-xl leading-[1.2] text-textPrimary">{pengguna.nama}</p>
+          <p className="text-lg tracking-[0.2px] text-textPrimary break-all">{pengguna.email}</p>
           <div className="flex flex-wrap gap-x-5 gap-y-1">
-            <button type="button" disabled={memuat} onClick={() => setPilihFoto(!pilihFoto)} className={teksTombol}>
+            <button type="button" disabled={memuat} onClick={() => setPilihFoto(!pilihFoto)} className={TEKS_TOMBOL}>
               Ganti Foto Profil
             </button>
-            {tersimpan.foto && (
-              <button type="button" disabled={memuat} onClick={hapusFotoProfil} className={teksTombol}>
+            {pengguna.foto && (
+              <button type="button" disabled={memuat} onClick={hapusFotoProfil} className={TEKS_TOMBOL}>
                 Hapus Foto
               </button>
             )}
@@ -126,7 +116,7 @@ export default function Profile() {
         <div className="flex flex-col gap-3 pt-4">
           <p className="text-base font-medium tracking-[0.2px] text-textSecondary">Pilih foto profil</p>
           <div className="flex flex-wrap gap-3">
-            {pilihanAvatar.map((nama) => (
+            {PILIHAN_AVATAR.map((nama) => (
               <button
                 key={nama}
                 type="button"
@@ -134,7 +124,7 @@ export default function Profile() {
                 aria-label={`Pilih ${nama}`}
                 onClick={() => pilihAvatar(nama)}
                 className={`rounded cursor-pointer border-2 disabled:opacity-60 disabled:cursor-not-allowed ${
-                  tersimpan.foto === nama ? 'border-brandGreen' : 'border-transparent'
+                  pengguna.foto === nama ? 'border-brandGreen' : 'border-transparent'
                 }`}
               >
                 <Gambar nama={nama} label={false} className="w-[60px] h-[60px] rounded" />
@@ -149,7 +139,7 @@ export default function Profile() {
           <FloatingField label="Nama Lengkap" name="nama" autoComplete="name" value={form.nama} onChange={handleChange} error={errors.nama} />
           <FloatingField label="E-Mail" name="email" type="email" autoComplete="email" value={form.email} onChange={handleChange} error={errors.email} />
           <div className="grid grid-cols-[92px_1fr] xl:grid-cols-[92px_160px] gap-4">
-            <FloatingField name="kodeNegara" value={form.kodeNegara} onChange={handleChange} pilihan={pilihanKode} />
+            <FloatingField name="kodeNegara" value={form.kodeNegara} onChange={handleChange} pilihan={PILIHAN_KODE} />
             <FloatingField label="No. Hp" name="noHp" type="tel" inputMode="numeric" autoComplete="tel-national" value={form.noHp} onChange={handleChange} error={errors.noHp} />
           </div>
         </div>

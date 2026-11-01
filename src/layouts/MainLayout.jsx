@@ -1,22 +1,18 @@
-import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import UserMenu from '../components/UserMenu';
 import Ikon from '../components/Ikon';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { menuAkun } from '../data/account';
 
 const tombol = 'inline-flex items-center justify-center h-[42px] px-[26px] rounded-[10px] text-base font-bold tracking-[0.2px] transition-colors';
 const tombolLogin = `${tombol} bg-brandGreen text-white hover:bg-brandGreen-hover`;
 const tombolRegister = `${tombol} bg-white border border-brandGreen text-brandGreen hover:bg-brandGreen-light`;
 
-
 const barisHp = 'flex items-center gap-2 w-full h-[54px] px-5 border-b border-borderField text-base font-medium tracking-[0.2px] text-left';
 
-
-
-
+// Kerangka halaman utama: navbar (dengan menu HP), isi, dan footer.
 export default function MainLayout({ children }) {
   const { sudahLogin, logout } = useAuth();
 

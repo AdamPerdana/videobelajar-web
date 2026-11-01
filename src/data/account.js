@@ -1,4 +1,7 @@
+// Data contoh untuk halaman akun: profil bawaan, menu, pesanan, dan kelas saya.
+// (Nantinya bisa diganti data dari API.)
 
+// Data bawaan pengguna; ditimpa data dari API saat login (lihat AuthProvider)
 export const pengguna = {
   nama: 'Jennie Ruby Jane',
   email: 'rubyjane@gmail.com',
@@ -13,7 +16,7 @@ export const menuAkun = [
   { label: 'Pesanan Saya', tujuan: '/pesanan', ikon: 'keranjang' },
 ];
 
-
+// Data dasar pesanan; tiap pesanan menimpa id, invoice, waktu, dan status
 const pesananDasar = {
   kelasId: 2,
   judul: 'Belajar Microsoft Office dan Google Workspace untuk Pemula',
@@ -44,6 +47,7 @@ export const labelStatusPesanan = {
   menunggu: { teks: 'Belum Bayar', warna: 'kuning' },
 };
 
+// `banding` = fungsi pembanding untuk Array.sort()
 export const urutanPesanan = [
   { id: 'terbaru', label: 'Terbaru', banding: (a, b) => b.waktu.localeCompare(a.waktu) },
   { id: 'terlama', label: 'Terlama', banding: (a, b) => a.waktu.localeCompare(b.waktu) },
@@ -51,16 +55,7 @@ export const urutanPesanan = [
   { id: 'harga-rendah', label: 'Harga Rendah', banding: (a, b) => a.harga - b.harga },
 ];
 
-
-export function formatWaktu(waktu) {
-  const d = new Date(waktu);
-  const tanggal = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-  const jam = `${String(d.getHours()).padStart(2, '0')}.${String(d.getMinutes()).padStart(2, '0')}`;
-  return `${tanggal}, ${jam}`;
-}
-
-
-
+// Data dasar kelas yang dimiliki; tiap kelas menimpa id dan modulSelesai
 const kelasDasar = {
   judul: 'Big 4 Auditor Financial Analyst',
   deskripsi: 'Mulai transformasi dengan instruktur profesional, harga yang terjangkau, dan kurikulum terbaik',
@@ -71,7 +66,6 @@ const kelasDasar = {
   durasiMenit: 360,
 };
 
-
 export const kelasSaya = [
   { ...kelasDasar, id: 6, modulSelesai: 12 },
   { ...kelasDasar, id: 7, modulSelesai: 2 },
@@ -79,9 +73,10 @@ export const kelasSaya = [
   { ...kelasDasar, id: 9, modulSelesai: 7 },
 ];
 
-
+// Dipakai CourseCard: kelas yang sudah dimiliki langsung dibuka di ruang belajar
 export function sudahDimiliki(idKelas) {
-  return kelasSaya.some((k) => k.id === idKelas);
+  // id dari API berupa teks ("1"), sedangkan data contoh berupa angka (1), jadi dibandingkan sebagai teks
+  return kelasSaya.some((k) => String(k.id) === String(idKelas));
 }
 
 export const tabKelasSaya = [

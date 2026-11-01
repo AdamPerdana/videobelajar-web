@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Ikon from './Ikon';
 
+// Ikon tiap jenis modul
 const ikonJenis = { video: 'putar', rangkuman: 'buku', pretest: 'ujian', quiz: 'ujian', ujian: 'ujian' };
 
+// Teks kecil di bawah judul modul: jumlah soal untuk tes, durasi untuk lainnya
 function keterangan(item) {
   return item.jumlahSoal ? `${item.jumlahSoal} Pertanyaan` : `${item.durasi} Menit`;
 }
 
+// Daftar modul belajar per bagian (bisa dibuka-tutup) beserta tombol review.
 export default function ModuleList({ bagian, aktifId, selesai, onPilih, onReview, reviewTerkirim }) {
   const bagianAktif = bagian.find((b) => b.item.some((i) => i.id === aktifId));
+  // Bagian mana saja yang sedang terbuka: { [idBagian]: true/false }
   const [terbuka, setTerbuka] = useState({ [bagianAktif?.id]: true });
 
- 
-  useEffect(() => {
-    if (bagianAktif) setTerbuka((lama) => ({ ...lama, [bagianAktif.id]: true }));
-  }, [bagianAktif?.id]);
+  // Saat modul aktif pindah ke bagian lain, bagian itu otomatis dibuka.
+  // Ini cara resmi React untuk menyesuaikan state ketika data berubah: bandingkan dengan
+  // nilai sebelumnya dan ubah state langsung saat render (tanpa useEffect, yang membuat render dua kali).
+  const [bagianTerakhir, setBagianTerakhir] = useState(bagianAktif?.id);
+  if (bagianAktif && bagianAktif.id !== bagianTerakhir) {
+    setBagianTerakhir(bagianAktif.id);
+    setTerbuka((lama) => ({ ...lama, [bagianAktif.id]: true }));
+  }
 
   return (
     <>

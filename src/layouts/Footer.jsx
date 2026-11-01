@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Container from './Container';
 import Logo from './Logo';
@@ -12,6 +11,7 @@ const kolom = [
 
 const sosial = ['linkedin', 'facebook', 'instagram', 'twitter'];
 
+// Kaki halaman: logo, alamat, tautan, dan ikon sosial media.
 export default function Footer() {
   return (
     <footer className="bg-white border-t border-borderField">

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Ikon from '../components/Ikon';
 import UserMenu from '../components/UserMenu';
 import Button from '../components/Button';
 
-
-
+// Kerangka ruang belajar: header progres, isi, daftar modul di samping, dan navigasi bawah.
 export default function LearnLayout({
   judul,
   kembaliKe,
@@ -13,8 +12,8 @@ export default function LearnLayout({
   jumlahModul,
   onAmbilSertifikat,
   sidebar,
-  sebelumnya,     
-  berikutnya,     
+  sebelumnya,
+  berikutnya,
   children,
 }) {
   const [popTerbuka, setPopTerbuka] = useState(false);

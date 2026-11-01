@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-
+// Jendela pop-up di tengah layar. Ditutup dengan tombol Escape atau klik di luar kotak.
 export default function Modal({ judul, onTutup, children }) {
   useEffect(() => {
     const tekan = (e) => {

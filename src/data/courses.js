@@ -1,7 +1,7 @@
+// Data contoh untuk katalog, filter, dan halaman detail kelas.
+// Harga disimpan dalam ribuan rupiah (300 = Rp 300K), durasi dalam jam.
 
-
-
-
+// Data dasar kelas; tiap kelas menimpa id, gambar, avatar, kategori, dan durasi
 const dasar = {
   judul: 'Big 4 Auditor Financial Analyst',
   deskripsi:
@@ -9,8 +9,8 @@ const dasar = {
   tutor: { nama: 'Jenna Ortega', jabatan: 'Senior Accountant', perusahaan: 'Gojek' },
   rating: 3.5,
   jumlahReview: 86,
-  harga: 300,        
-  hargaCoret: null,  
+  harga: 300,
+  hargaCoret: null,
 };
 
 export const daftarKelas = [
@@ -25,7 +25,6 @@ export const daftarKelas = [
   { ...dasar, id: 9, gambar: 'course-9', avatar: 'tutor-9', kategori: 'Bisnis Manajemen', durasi: 12 },
 ];
 
-
 export const tabKategori = [
   { label: 'Semua Kelas', nilai: 'semua' },
   { label: 'Pemasaran', nilai: 'Pemasaran' },
@@ -34,9 +33,9 @@ export const tabKategori = [
   { label: 'Bisnis', nilai: 'Bisnis Manajemen' },
 ];
 
-
 export const pilihanBidang = ['Pemasaran', 'Digital & Teknologi', 'Pengembangan Diri', 'Bisnis Manajemen'];
 
+// `cocok` = fungsi yang menentukan apakah sebuah kelas masuk ke pilihan filter ini
 export const pilihanHarga = [
   { id: 'murah', label: 'Di bawah Rp 200K', cocok: (harga) => harga < 200 },
   { id: 'sedang', label: 'Rp 200K - Rp 300K', cocok: (harga) => harga >= 200 && harga <= 300 },
@@ -49,6 +48,7 @@ export const pilihanDurasi = [
   { id: 'panjang', label: 'Lebih dari 8 Jam', cocok: (jam) => jam > 8 },
 ];
 
+// `banding` = fungsi pembanding untuk Array.sort()
 export const pilihanUrutan = [
   { id: 'harga-rendah', label: 'Harga Rendah', banding: (a, b) => a.harga - b.harga },
   { id: 'harga-tinggi', label: 'Harga Tinggi', banding: (a, b) => b.harga - a.harga },
@@ -57,7 +57,6 @@ export const pilihanUrutan = [
   { id: 'rating-tinggi', label: 'Rating Tertinggi', banding: (a, b) => b.rating - a.rating },
   { id: 'rating-rendah', label: 'Rating Terendah', banding: (a, b) => a.rating - b.rating },
 ];
-
 
 const tutorDetail = {
   nama: 'Gregorius Edrik Lawanto',
@@ -109,8 +108,3 @@ export const detailKelas = {
     { nama: 'Gregorius Edrik Lawanto', asal: 'Alumni Batch 4', isi: tutorDetail.cerita, rating: 3.5, avatar: 'tutor-8' },
   ],
 };
-
-
-export function hargaRibuan(nilai) {
-  return `Rp ${nilai}K`;
-}

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Ikon from './Ikon';
 
-
+// Pemutar video. Kalau `src` kosong (video belum dipasang), tombol putar langsung menandai modul selesai.
 export default function VideoPlayer({ src, onSelesai }) {
   const [ditekan, setDitekan] = useState(false);
 

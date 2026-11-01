@@ -1,4 +1,3 @@
-import React from 'react';
 
 
 const ikonIsi = {
@@ -26,7 +25,6 @@ const ikonIsi = {
   centang: <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />,
 };
 
-
 const ikonGaris = {
   jam: (<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>),
   putar: (<><circle cx="12" cy="12" r="9" /><path d="m10 8.5 5.5 3.5-5.5 3.5z" /></>),
@@ -44,6 +42,7 @@ const ikonGaris = {
   twitter: <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />,
 };
 
+// Ikon SVG berdasarkan nama. Ikon isi (fill) dan ikon garis (stroke) dipisah karena cara menggambarnya beda.
 export default function Ikon({ nama, ukuran = 24, className = '' }) {
   if (ikonIsi[nama]) {
     return (

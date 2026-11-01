@@ -1,53 +1,50 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { masukUser } from '../services/api/userApi';
+import { kumpulkanError, validasiEmail, validasiPassword } from '../utils/validation';
 import AuthLayout from '../layouts/AuthLayout';
 import InputField from '../components/InputField';
 import Button from '../components/Button';
 import Divider from '../components/Divider';
 import GoogleButton from '../components/GoogleButton';
 
+// Halaman tujuan setelah berhasil masuk
+const TUJUAN = '/';
+
 export default function Login() {
   const navigate = useNavigate();
   const { sudahLogin, login } = useAuth();
-  
-  const tujuan = '/';
+
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [errors, setErrors] = useState({});
-  const [galat, setGalat] = useState(''); 
+  const [errors, setErrors] = useState({}); // error per kolom, mis. { email: '...' }
+  const [galat, setGalat] = useState(''); // error dari server
   const [memuat, setMemuat] = useState(false);
 
+  // Satu handler untuk semua kolom: `name` pada input menentukan field mana yang diubah
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' }); 
+    setFormData((lama) => ({ ...lama, [name]: value }));
+    setErrors((lama) => ({ ...lama, [name]: '' }));
     setGalat('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const errorBaru = {};
-    if (!formData.email.trim()) {
-      errorBaru.email = 'E-Mail wajib diisi';
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errorBaru.email = 'Format E-Mail tidak valid';
-    }
-    if (!formData.password) {
-      errorBaru.password = 'Kata sandi wajib diisi';
-    }
-
+    const errorBaru = kumpulkanError({
+      email: validasiEmail(formData.email),
+      password: validasiPassword(formData.password),
+    });
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    
     setMemuat(true);
     setGalat('');
     try {
       const user = await masukUser(formData.email.trim(), formData.password);
       login(user);
-      navigate(tujuan, { replace: true });
+      navigate(TUJUAN, { replace: true });
     } catch (err) {
       setGalat(err.message);
     } finally {
@@ -55,8 +52,8 @@ export default function Login() {
     }
   };
 
-  
-  if (sudahLogin) return <Navigate to={tujuan} replace />;
+  // Sudah login tidak perlu melihat halaman ini lagi
+  if (sudahLogin) return <Navigate to={TUJUAN} replace />;
 
   return (
     <AuthLayout judul="Masuk ke Akun" deskripsi="Yuk, lanjutin belajarmu di videobelajar.">
@@ -109,7 +106,7 @@ export default function Login() {
         <Divider>atau</Divider>
 
         {/* TODO: sambungkan ke login Google */}
-        <GoogleButton onClick={() => console.log('Login Google')}>Masuk dengan Google</GoogleButton>
+        <GoogleButton>Masuk dengan Google</GoogleButton>
       </form>
     </AuthLayout>
   );

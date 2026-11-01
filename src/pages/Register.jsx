@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { daftarUser } from '../services/api/userApi';
+import {
+  hanyaAngka,
+  kumpulkanError,
+  validasiEmail,
+  validasiKonfirmasi,
+  validasiNama,
+  validasiNoHp,
+  validasiPasswordBaru,
+} from '../utils/validation';
 import AuthLayout from '../layouts/AuthLayout';
 import InputField from '../components/InputField';
 import PhoneField from '../components/PhoneField';
@@ -9,11 +18,13 @@ import Button from '../components/Button';
 import Divider from '../components/Divider';
 import GoogleButton from '../components/GoogleButton';
 
+// Halaman tujuan setelah berhasil daftar
+const TUJUAN = '/';
+
 export default function Register() {
   const navigate = useNavigate();
   const { sudahLogin, login } = useAuth();
-  
-  const tujuan = '/';
+
   const [formData, setFormData] = useState({
     nama: '',
     email: '',
@@ -22,59 +33,33 @@ export default function Register() {
     password: '',
     konfirmasiPassword: '',
   });
-  const [errors, setErrors] = useState({});
-  const [galat, setGalat] = useState(''); 
+  const [errors, setErrors] = useState({}); // error per kolom
+  const [galat, setGalat] = useState(''); // error dari server
   const [memuat, setMemuat] = useState(false);
 
   const handleChange = (e) => {
-    const { name } = e.target;
-    let { value } = e.target;
+    const { name, value } = e.target;
+    // Nomor HP hanya boleh berisi angka
+    const nilai = name === 'noHp' ? hanyaAngka(value) : value;
 
-    
-    if (name === 'noHp') value = value.replace(/\D/g, '');
-
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' }); 
+    setFormData((lama) => ({ ...lama, [name]: nilai }));
+    setErrors((lama) => ({ ...lama, [name]: '' }));
     setGalat('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const errorBaru = {};
-
-    if (!formData.nama.trim()) {
-      errorBaru.nama = 'Nama lengkap wajib diisi';
-    }
-
-    if (!formData.email.trim()) {
-      errorBaru.email = 'E-Mail wajib diisi';
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errorBaru.email = 'Format E-Mail tidak valid';
-    }
-
-    if (!formData.noHp) {
-      errorBaru.noHp = 'No. Hp wajib diisi';
-    } else if (formData.noHp.length < 8 || formData.noHp.length > 13) {
-      errorBaru.noHp = 'No. Hp harus 8-13 angka';
-    }
-
-    if (!formData.password) {
-      errorBaru.password = 'Kata sandi wajib diisi';
-    } else if (formData.password.length < 8) {
-      errorBaru.password = 'Kata sandi minimal 8 karakter';
-    }
-
-    if (!formData.konfirmasiPassword) {
-      errorBaru.konfirmasiPassword = 'Konfirmasi kata sandi wajib diisi';
-    } else if (formData.konfirmasiPassword !== formData.password) {
-      errorBaru.konfirmasiPassword = 'Konfirmasi kata sandi tidak sama';
-    }
-
+    const errorBaru = kumpulkanError({
+      nama: validasiNama(formData.nama),
+      email: validasiEmail(formData.email),
+      noHp: validasiNoHp(formData.noHp),
+      password: validasiPasswordBaru(formData.password),
+      konfirmasiPassword: validasiKonfirmasi(formData.konfirmasiPassword, formData.password),
+    });
     setErrors(errorBaru);
     if (Object.keys(errorBaru).length > 0) return;
 
-    
     setMemuat(true);
     setGalat('');
     try {
@@ -86,7 +71,7 @@ export default function Register() {
         password: formData.password,
       });
       login(user);
-      navigate(tujuan, { replace: true });
+      navigate(TUJUAN, { replace: true });
     } catch (err) {
       setGalat(err.message);
     } finally {
@@ -94,7 +79,7 @@ export default function Register() {
     }
   };
 
-  if (sudahLogin) return <Navigate to={tujuan} replace />;
+  if (sudahLogin) return <Navigate to={TUJUAN} replace />;
 
   return (
     <AuthLayout judul="Pendaftaran Akun" deskripsi="Yuk, daftarkan akunmu sekarang juga!">
@@ -125,7 +110,7 @@ export default function Register() {
             label="No. Hp"
             name="noHp"
             kodeNegara={formData.kodeNegara}
-            onKodeChange={(e) => setFormData({ ...formData, kodeNegara: e.target.value })}
+            onKodeChange={(e) => setFormData((lama) => ({ ...lama, kodeNegara: e.target.value }))}
             value={formData.noHp}
             onChange={handleChange}
             error={errors.noHp}
@@ -179,7 +164,7 @@ export default function Register() {
         <Divider>atau</Divider>
 
         {/* TODO: sambungkan ke pendaftaran Google */}
-        <GoogleButton onClick={() => console.log('Daftar Google')}>Daftar dengan Google</GoogleButton>
+        <GoogleButton>Daftar dengan Google</GoogleButton>
       </form>
     </AuthLayout>
   );

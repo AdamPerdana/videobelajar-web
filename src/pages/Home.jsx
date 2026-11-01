@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Container from '../layouts/Container';
@@ -8,50 +9,92 @@ import CourseCard from '../components/CourseCard';
 import Tabs from '../components/Tabs';
 import Modal from '../components/Modal';
 import CourseFormModal from '../components/CourseFormModal';
-import { daftarKelas, tabKategori } from '../data/courses';
+import SectionHeading from '../components/SectionHeading';
+import Newsletter from '../components/Newsletter';
+import { tabKategori } from '../data/courses';
+import { addKelas, deleteKelas, editKelas, getKelas } from '../services/api/courseApi';
+import { hapusKelas, pilihKelas, setKelas, tambahKelas, ubahKelas } from '../store/redux/kelasReducer';
+
+// Nilai khusus untuk `formAktif` saat form dibuka dalam mode "tambah"
+const MODE_TAMBAH = 'tambah';
 
 export default function Home() {
   const navigate = useNavigate();
   const [tabAktif, setTabAktif] = useState('semua');
-  const [email, setEmail] = useState('');
-  const [terkirim, setTerkirim] = useState(false);
 
-  
-  const [kelasList, setKelasList] = useState(daftarKelas);
-  
+  const dispatch = useDispatch();
+  // Daftar kelas dibaca dari Redux (state global), bukan lagi dari state lokal
+  const kelasList = useSelector(pilihKelas);
+
+  const [memuat, setMemuat] = useState(true); // true selama data pertama kali diambil dari API
+  const [galat, setGalat] = useState(''); // pesan error dari API
+  const [percobaan, setPercobaan] = useState(0); // dinaikkan oleh tombol "Coba lagi" untuk mengambil ulang
+  const [sedangProses, setSedangProses] = useState(false); // true selama tambah/ubah/hapus berjalan
+
+  // Form tambah/ubah: null = tertutup, MODE_TAMBAH = tambah, objek kelas = ubah kelas itu
   const [formAktif, setFormAktif] = useState(null);
+  // Kelas yang sedang menunggu konfirmasi hapus (null = tidak ada)
   const [kelasHapus, setKelasHapus] = useState(null);
+
+  // Get: ambil daftar kelas dari API lalu simpan ke Redux
+  useEffect(() => {
+    let dibatalkan = false; // mencegah update state kalau halaman sudah ditutup
+
+    async function muat() {
+      setMemuat(true);
+      setGalat('');
+      try {
+        const data = await getKelas();
+        if (!dibatalkan) dispatch(setKelas(data));
+      } catch (err) {
+        if (!dibatalkan) setGalat(err.message);
+      } finally {
+        if (!dibatalkan) setMemuat(false);
+      }
+    }
+    muat();
+
+    return () => {
+      dibatalkan = true;
+    };
+  }, [dispatch, percobaan]);
 
   const kelasTampil =
     tabAktif === 'semua' ? kelasList : kelasList.filter((k) => k.kategori === tabAktif);
 
-  
-  const tambahKelas = (dataBaru) => {
-    const idBaru = kelasList.reduce((maks, k) => Math.max(maks, k.id), 0) + 1;
-    setKelasList([...kelasList, { ...dataBaru, id: idBaru, rating: 0, jumlahReview: 0 }]);
-    setFormAktif(null);
+  // Add / Edit / Delete selalu begini: panggil API dulu, kalau berhasil baru ubah Redux
+  // (jadi tampilan hanya berubah kalau server benar-benar menyimpannya).
+  // `aksi` = fungsi yang memanggil API dan Redux, `tutup` = menutup jendela yang sedang terbuka.
+  const jalankan = async (aksi, tutup) => {
+    if (sedangProses) return;
+    setSedangProses(true);
+    setGalat('');
+    try {
+      await aksi();
+      tutup();
+    } catch (err) {
+      setGalat(err.message);
+    } finally {
+      setSedangProses(false);
+    }
   };
 
-  
-  const ubahKelas = (id, dataBaru) => {
-    setKelasList(kelasList.map((k) => (k.id === id ? { ...k, ...dataBaru } : k)));
-    setFormAktif(null);
-  };
+  const simpanKelas = (data) =>
+    jalankan(async () => {
+      if (formAktif === MODE_TAMBAH) {
+        const kelasBaru = await addKelas({ ...data, rating: 0, jumlahReview: 0 });
+        dispatch(tambahKelas(kelasBaru));
+      } else {
+        const kelasBaru = await editKelas(formAktif, data);
+        dispatch(ubahKelas(kelasBaru));
+      }
+    }, () => setFormAktif(null));
 
-  
-  const hapusKelas = (id) => {
-    setKelasList(kelasList.filter((k) => k.id !== id));
-    setKelasHapus(null);
-  };
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (!/^\S+@\S+\.\S+$/.test(email)) return;
-    
-    console.log('Subscribe:', email);
-    setTerkirim(true);
-    setEmail('');
-  };
+  const konfirmasiHapus = () =>
+    jalankan(async () => {
+      await deleteKelas(kelasHapus.id);
+      dispatch(hapusKelas(kelasHapus.id));
+    }, () => setKelasHapus(null));
 
   return (
     <MainLayout>
@@ -78,22 +121,35 @@ export default function Home() {
         {/* Koleksi kelas */}
         <section className="flex flex-col gap-6 md:gap-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div className="flex flex-col gap-2.5">
-              <h2 className="font-heading font-semibold text-2xl sm:text-[32px] leading-[1.1] text-textPrimary">
-                Koleksi Video Pembelajaran Unggulan
-              </h2>
-              <p className="text-base font-medium tracking-[0.2px] text-textSecondary">
-                Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!
-              </p>
-            </div>
-            <Button variant="primary" size="lg" onClick={() => setFormAktif('tambah')}>
+            <SectionHeading
+              judul="Koleksi Video Pembelajaran Unggulan"
+              deskripsi="Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!"
+            />
+            <Button variant="primary" size="lg" onClick={() => setFormAktif(MODE_TAMBAH)}>
               + Tambah Kelas
             </Button>
           </div>
 
           <Tabs daftar={tabKategori} aktif={tabAktif} onGanti={setTabAktif} />
 
-          {kelasTampil.length > 0 ? (
+          {memuat && <p className="py-10 text-center text-textSecondary">Memuat kelas...</p>}
+
+          {galat && (
+            <p role="alert" className="text-center text-error">
+              {galat}{' '}
+              {!sedangProses && kelasList.length === 0 && (
+                <button
+                  type="button"
+                  onClick={() => setPercobaan((n) => n + 1)}
+                  className="font-medium text-tertiary cursor-pointer hover:underline"
+                >
+                  Coba lagi
+                </button>
+              )}
+            </p>
+          )}
+
+          {!memuat && (kelasTampil.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
               {kelasTampil.map((kelas) => (
                 <div key={kelas.id} className="flex flex-col gap-3">
@@ -111,59 +167,19 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <p className="py-10 text-center text-textSecondary">Belum ada kelas di kategori ini.</p>
-          )}
+            !galat && <p className="py-10 text-center text-textSecondary">Belum ada kelas di kategori ini.</p>
+          ))}
         </section>
 
-        {/* Newsletter */}
-        <LatarGambar nama="newsletter-bg" className="rounded-[10px] min-h-[400px]">
-          <div className="flex flex-col items-center justify-center gap-10 min-h-[400px] px-5 py-10 text-center">
-            <div className="flex flex-col gap-1 max-w-[525px]">
-              <p className="text-lg font-medium tracking-[0.2px] text-white/70">NEWSLETTER</p>
-              <h2 className="font-heading font-semibold text-2xl sm:text-[32px] leading-[1.1] text-white">
-                Mau Belajar Lebih Banyak?
-              </h2>
-              <p className="pt-1.5 text-base tracking-[0.2px] text-white">
-                Daftarkan dirimu untuk mendapatkan informasi terbaru dan penawaran spesial dari program-program
-                terbaik hariesok.id
-              </p>
-            </div>
-
-            <form
-              onSubmit={handleSubscribe}
-              className="flex items-center gap-2 w-full max-w-[525px] p-2 pl-5 sm:pl-8 bg-white rounded-[10px]"
-            >
-              <input
-                type="email"
-                aria-label="Email"
-                placeholder="Masukkan Emailmu"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setTerkirim(false);
-                }}
-                className="flex-1 min-w-0 h-[42px] bg-transparent outline-none text-base tracking-[0.2px] text-textPrimary placeholder:text-textSecondary"
-              />
-              <Button type="submit" variant="warning" size="lg">
-                Subscribe
-              </Button>
-            </form>
-
-            {terkirim && (
-              <p role="status" className="-mt-6 text-sm text-white">
-                Terima kasih, email kamu sudah terdaftar.
-              </p>
-            )}
-          </div>
-        </LatarGambar>
+        <Newsletter />
       </Container>
 
       {/* Form tambah / ubah */}
       {formAktif && (
         <CourseFormModal
-          kelasAwal={formAktif === 'tambah' ? null : formAktif}
+          kelasAwal={formAktif === MODE_TAMBAH ? null : formAktif}
           onTutup={() => setFormAktif(null)}
-          onSimpan={(data) => (formAktif === 'tambah' ? tambahKelas(data) : ubahKelas(formAktif.id, data))}
+          onSimpan={simpanKelas}
         />
       )}
 
@@ -179,7 +195,7 @@ export default function Home() {
               <Button variant="outline" size="lg" onClick={() => setKelasHapus(null)}>
                 Batal
               </Button>
-              <Button variant="warning" size="lg" onClick={() => hapusKelas(kelasHapus.id)}>
+              <Button variant="warning" size="lg" onClick={konfirmasiHapus}>
                 Ya, Hapus
               </Button>
             </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from './Button';
 
 function IkonGoogle() {
@@ -12,7 +11,7 @@ function IkonGoogle() {
   );
 }
 
-
+// Tombol "Masuk/Daftar dengan Google" (belum tersambung ke Google, lihat TODO di halaman pemakainya).
 export default function GoogleButton({ children, onClick }) {
   return (
     <Button variant="outline" size="lg" fullWidth onClick={onClick}>

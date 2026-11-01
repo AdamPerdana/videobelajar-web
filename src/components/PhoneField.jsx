@@ -1,4 +1,3 @@
-import React from 'react';
 
 function BenderaIndonesia() {
   return (
@@ -13,12 +12,13 @@ const daftarKodeNegara = [
   { kode: '+62', nama: 'Indonesia', Bendera: BenderaIndonesia },
 ];
 
+// Input nomor HP: pilihan kode negara di kiri, nomor di kanan.
 export default function PhoneField({
   label,
   name,
-  kodeNegara = '+62',     
-  onKodeChange,           
-  value,                  
+  kodeNegara = '+62',
+  onKodeChange,
+  value,
   onChange,
   error = '',
   required = false,

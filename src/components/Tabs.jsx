@@ -1,6 +1,6 @@
-import React from 'react';
 
 
+// Deretan tab. `daftar` = [{ label, nilai }], `aktif` = nilai tab terpilih, `onGanti(nilai)` dipanggil saat tab diklik.
 export default function Tabs({ daftar, aktif, onGanti }) {
   return (
     <div role="tablist" className="flex gap-6 sm:gap-9 overflow-x-auto">

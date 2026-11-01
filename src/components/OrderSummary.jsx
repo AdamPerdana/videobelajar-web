@@ -1,6 +1,6 @@
-import React from 'react';
-import { rupiah } from '../data/payment';
+import { rupiah } from '../utils/format';
 
+// Rincian biaya. `baris` = [{ label, nilai }], total dihitung otomatis.
 export default function OrderSummary({ judul = 'Ringkasan Pesanan', baris }) {
   const total = baris.reduce((jumlah, b) => jumlah + b.nilai, 0);
 

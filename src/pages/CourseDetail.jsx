@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Container from '../layouts/Container';
-import Gambar, { LatarGambar } from '../components/Gambar';
+import { LatarGambar } from '../components/Gambar';
+import OrangInfo from '../components/OrangInfo';
+import SectionHeading from '../components/SectionHeading';
 import Rating from '../components/Rating';
 import Ikon from '../components/Ikon';
 import Accordion from '../components/Accordion';
 import CourseCard from '../components/CourseCard';
 import CourseInfoCard from '../components/CourseInfoCard';
 import { daftarKelas, detailKelas } from '../data/courses';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
+import { useTersalin } from '../hooks/useTersalin';
 
-const kartu = 'flex flex-col gap-5 p-5 sm:p-6 bg-white border border-borderField rounded-[10px]';
-const judulBagian = 'font-heading font-semibold text-xl leading-[1.2] text-textPrimary';
+const KARTU = 'flex flex-col gap-5 p-5 sm:p-6 bg-white border border-borderField rounded-[10px]';
+const JUDUL_BAGIAN = 'font-heading font-semibold text-xl leading-[1.2] text-textPrimary';
 
-
+// Kartu tutor atau review: foto + nama + keterangan, lalu isi teks (dan rating untuk review)
 function KartuOrang({ avatar, nama, keterangan, isi, rating }) {
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-5 border border-borderField rounded-[10px]">
-      <div className="flex items-center gap-2.5">
-        <Gambar nama={avatar} alt="" label={false} className="w-10 h-10 rounded-[10px]" />
-        <div>
-          <p className="text-base font-medium tracking-[0.2px] text-textPrimary">{nama}</p>
-          <p className="text-sm tracking-[0.2px] text-textSecondary">{keterangan}</p>
-        </div>
-      </div>
+      <OrangInfo avatar={avatar} nama={nama} keterangan={keterangan} />
       <p className="text-base tracking-[0.2px] text-textPrimary">{isi}</p>
       {rating !== undefined && <Rating nilai={rating} />}
     </div>
@@ -34,24 +30,22 @@ function KartuOrang({ avatar, nama, keterangan, isi, rating }) {
 export default function CourseDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const kelas = detailKelas; 
+  const kelas = detailKelas; // data contoh: semua id memakai data yang sama
   const kelasLain = daftarKelas.filter((k) => String(k.id) !== id).slice(-3);
   const { sudahLogin } = useAuth();
-  const [tersalin, setTersalin] = useState(false);
+  const { tersalin, salin } = useTersalin();
 
-  
+  // Pakai menu bagikan bawaan perangkat kalau ada (HP), kalau tidak salin tautan ke clipboard
   const bagikan = async () => {
     const tautan = window.location.href;
+    if (!navigator.share) {
+      await salin(tautan);
+      return;
+    }
     try {
-      if (navigator.share) {
-        await navigator.share({ title: kelas.judul, url: tautan });
-        return;
-      }
-      await navigator.clipboard.writeText(tautan);
-      setTersalin(true);
-      setTimeout(() => setTersalin(false), 2000);
+      await navigator.share({ title: kelas.judul, url: tautan });
     } catch {
-      
+      // Pengguna menutup menu bagikan: tidak perlu melakukan apa-apa
     }
   };
 
@@ -83,13 +77,13 @@ export default function CourseDetail() {
         <div className="flex flex-col-reverse lg:flex-row lg:items-start gap-6 lg:gap-9">
           {/* Kolom kiri */}
           <div className="flex-1 min-w-0 flex flex-col gap-6 md:gap-9">
-            <section className={kartu}>
-              <h2 className={judulBagian}>Deskripsi</h2>
+            <section className={KARTU}>
+              <h2 className={JUDUL_BAGIAN}>Deskripsi</h2>
               <p className="text-base tracking-[0.2px] text-textSecondary">{kelas.deskripsi}</p>
             </section>
 
-            <section className={kartu}>
-              <h2 className={judulBagian}>Belajar bersama Tutor Profesional</h2>
+            <section className={KARTU}>
+              <h2 className={JUDUL_BAGIAN}>Belajar bersama Tutor Profesional</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {kelas.tutor.map((t, i) => (
                   <KartuOrang
@@ -103,8 +97,8 @@ export default function CourseDetail() {
               </div>
             </section>
 
-            <section className={kartu}>
-              <h2 className={judulBagian}>Kamu akan Mempelajari</h2>
+            <section className={KARTU}>
+              <h2 className={JUDUL_BAGIAN}>Kamu akan Mempelajari</h2>
               <div className="flex flex-col gap-3">
                 {kelas.silabus.map((bab, i) => (
                   <Accordion key={bab.judul} judul={bab.judul} varian="teks" awalTerbuka={i === 0}>
@@ -125,8 +119,8 @@ export default function CourseDetail() {
               </div>
             </section>
 
-            <section className={kartu}>
-              <h2 className={judulBagian}>Rating dan Review</h2>
+            <section className={KARTU}>
+              <h2 className={JUDUL_BAGIAN}>Rating dan Review</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {kelas.review.map((r, i) => (
                   <KartuOrang key={i} avatar={r.avatar} nama={r.nama} keterangan={r.asal} isi={r.isi} rating={r.rating} />
@@ -150,14 +144,10 @@ export default function CourseDetail() {
 
         {/* Kelas lain */}
         <section className="flex flex-col gap-6 md:gap-8">
-          <div className="flex flex-col gap-2.5">
-            <h2 className="font-heading font-semibold text-2xl sm:text-[32px] leading-[1.1] text-textPrimary">
-              Video Pembelajaran Terkait Lainnya
-            </h2>
-            <p className="text-base font-medium tracking-[0.2px] text-textSecondary">
-              Ekspansi Pengetahuan Anda dengan Rekomendasi Spesial Kami!
-            </p>
-          </div>
+          <SectionHeading
+            judul="Video Pembelajaran Terkait Lainnya"
+            deskripsi="Ekspansi Pengetahuan Anda dengan Rekomendasi Spesial Kami!"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {kelasLain.map((k) => (
               <CourseCard key={k.id} kelas={k} />

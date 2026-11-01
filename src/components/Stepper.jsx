@@ -1,9 +1,8 @@
-import React from 'react';
 import Ikon from './Ikon';
 
 const daftarLangkah = ['Pilih Metode', 'Bayar', 'Selesai'];
 
-
+// Indikator langkah pembayaran: Pilih Metode -> Bayar -> Selesai. `tertunda` membuat garis langkah akhir abu-abu.
 export default function Stepper({ aktif = 1, tertunda = false }) {
   return (
     <ol className="flex items-center gap-2 sm:gap-3">

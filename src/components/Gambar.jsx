@@ -1,14 +1,14 @@
-import React from 'react';
 import { gambar } from '../assets/images';
 
-
+// Menampilkan gambar berdasarkan nama file (tanpa ekstensi). Kalau tidak ditemukan, pakai `cadangan`,
+// dan kalau itu juga tidak ada tampil kotak abu-abu berisi nama (placeholder).
 export default function Gambar({
-  nama,               
-  cadangan,           
+  nama,
+  cadangan,
   alt = '',
-  className = '',     
-  fit = 'cover',      
-  label = true,       
+  className = '',
+  fit = 'cover',
+  label = true,
 }) {
   const src = gambar(nama) || gambar(cadangan);
 
@@ -33,7 +33,6 @@ export default function Gambar({
     </div>
   );
 }
-
 
 export function LatarGambar({ nama, cadangan, className = '', children }) {
   const src = gambar(nama) || gambar(cadangan);

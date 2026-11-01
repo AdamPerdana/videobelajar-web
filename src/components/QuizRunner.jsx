@@ -1,38 +1,38 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Gambar from './Gambar';
 import Ikon from './Ikon';
 import Button from './Button';
 import Modal from './Modal';
 import { aturanTes, ambilSoal } from '../data/learning';
+import { formatWaktuTes } from '../utils/format';
 
-const isi = 'px-4 md:px-10 xl:pl-[120px] xl:pr-12 py-8 md:py-10';
-const judul = 'font-heading font-semibold text-xl sm:text-2xl leading-[1.2] text-textPrimary';
-const teks = 'text-base sm:text-lg tracking-[0.2px] text-textSecondary';
+const ISI = 'px-4 md:px-10 xl:pl-[120px] xl:pr-12 py-8 md:py-10';
+const JUDUL = 'font-heading font-semibold text-xl sm:text-2xl leading-[1.2] text-textPrimary';
+const TEKS = 'text-base sm:text-lg tracking-[0.2px] text-textSecondary';
 
-
-function formatTanggal(waktu) {
-  const d = new Date(waktu);
-  const tanggal = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-  const jam = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  return `${tanggal}, ${jam}`;
+// Nilai (0-100) dan status lulus dari hasil tes. nilaiLulus null = selalu lulus (pretest).
+function hitungNilai(hasil, aturan) {
+  const nilai = Math.round((hasil.benar / hasil.jumlah) * 100);
+  const lulus = aturan.nilaiLulus === null || nilai >= aturan.nilaiLulus;
+  return { nilai, lulus };
 }
 
-
+// Tahap 1: halaman aturan sebelum tes dimulai
 function Aturan({ aturan, onMulai }) {
   return (
     <>
       <Gambar nama="banner-rules" alt="" className="w-full h-[200px] md:h-[360px]" />
-      <div className={`${isi} flex flex-col gap-6 max-w-[1000px]`}>
+      <div className={`${ISI} flex flex-col gap-6 max-w-[1000px]`}>
         <div className="flex flex-col gap-3">
-          <h1 className={judul}>Aturan</h1>
-          <p className={teks}>{aturan.pembuka}</p>
+          <h1 className={JUDUL}>Aturan</h1>
+          <p className={TEKS}>{aturan.pembuka}</p>
         </div>
-        <p className={teks}>
+        <p className={TEKS}>
           {aturan.syarat.map((baris) => (
             <span key={baris} className="block">{baris}</span>
           ))}
         </p>
-        <p className={teks}>{aturan.penutup}</p>
+        <p className={TEKS}>{aturan.penutup}</p>
         <div>
           <Button variant="primary" size="lg" onClick={onMulai}>
             {aturan.tombolMulai}
@@ -43,10 +43,10 @@ function Aturan({ aturan, onMulai }) {
   );
 }
 
-
+// Tahap 2: mengerjakan soal
 function Soal({ aturan, soal, onSelesai }) {
-  const [nomor, setNomor] = useState(0);            
-  const [jawaban, setJawaban] = useState({});       
+  const [nomor, setNomor] = useState(0); // nomor soal yang sedang dibuka (mulai 0)
+  const [jawaban, setJawaban] = useState({}); // { nomorSoal: indeksPilihan }
   const [konfirmasi, setKonfirmasi] = useState(false);
 
   const sekarang = soal[nomor];
@@ -94,8 +94,8 @@ function Soal({ aturan, soal, onSelesai }) {
       {/* Soal dan pilihan jawaban */}
       <div className="flex-1 min-w-0 flex flex-col gap-8 px-4 md:px-10 xl:px-16 py-8 md:py-10">
         <div className="flex flex-col gap-3">
-          <h1 className={judul}>Pertanyaan {nomor + 1}</h1>
-          <p className={teks}>{sekarang.pertanyaan}</p>
+          <h1 className={JUDUL}>Pertanyaan {nomor + 1}</h1>
+          <p className={TEKS}>{sekarang.pertanyaan}</p>
         </div>
 
         <div role="radiogroup" aria-label={`Pilihan jawaban soal ${nomor + 1}`} className="flex flex-col gap-2.5">
@@ -170,20 +170,19 @@ function Soal({ aturan, soal, onSelesai }) {
   );
 }
 
-
+// Tahap 3: hasil tes
 function Hasil({ aturan, hasil, onUlangi }) {
-  const nilai = Math.round((hasil.benar / hasil.jumlah) * 100);
-  const lulus = aturan.nilaiLulus === null || nilai >= aturan.nilaiLulus;
+  const { nilai, lulus } = hitungNilai(hasil, aturan);
   const sel = 'flex flex-col gap-1 px-4 py-4';
   const angka = 'font-heading font-semibold text-2xl leading-[1.2]';
 
   return (
     <>
       <Gambar nama={lulus ? 'banner-congrats' : 'banner-try-again'} alt="" className="w-full h-[200px] md:h-[360px]" />
-      <div className={`${isi} flex flex-col gap-6 max-w-[1000px]`}>
+      <div className={`${ISI} flex flex-col gap-6 max-w-[1000px]`}>
         <div className="flex flex-col gap-2">
-          <h1 className={judul}>Tanggal {aturan.nama}:</h1>
-          <p className="text-base tracking-[0.2px] text-textSecondary">{formatTanggal(hasil.waktu)}</p>
+          <h1 className={JUDUL}>Tanggal {aturan.nama}:</h1>
+          <p className="text-base tracking-[0.2px] text-textSecondary">{formatWaktuTes(hasil.waktu)}</p>
         </div>
 
         <dl className="grid grid-cols-2 sm:grid-cols-4 border border-borderField">
@@ -213,14 +212,14 @@ function Hasil({ aturan, hasil, onUlangi }) {
 
         {lulus ? (
           <div className="flex flex-col gap-4">
-            <h2 className={judul}>Selesai!</h2>
+            <h2 className={JUDUL}>Selesai!</h2>
             {aturan.hasilLulus.map((baris) => (
               <p key={baris} className="text-base tracking-[0.2px] text-textSecondary">{baris}</p>
             ))}
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <h2 className={judul}>Sedikit Lagi!</h2>
+            <h2 className={JUDUL}>Sedikit Lagi!</h2>
             <p className="text-base tracking-[0.2px] text-textSecondary">
               Kamu sudah menyelesaikan {aturan.namaKecil} dengan baik namun nilaimu belum cukup untuk melanjutkan materi.
             </p>
@@ -240,7 +239,8 @@ function Hasil({ aturan, hasil, onUlangi }) {
   );
 }
 
-
+// Menjalankan satu tes lewat tiga tahap: aturan -> soal -> hasil.
+// Kalau tes ini sudah pernah dikerjakan (`hasil` ada), langsung tampilkan hasilnya.
 export default function QuizRunner({ item, hasil, onSelesai }) {
   const aturan = aturanTes[item.jenis];
   const [tahap, setTahap] = useState(hasil ? 'hasil' : 'aturan');
@@ -254,15 +254,12 @@ export default function QuizRunner({ item, hasil, onSelesai }) {
         aturan={aturan}
         soal={soal}
         onSelesai={(hasilBaru) => {
-          const nilai = Math.round((hasilBaru.benar / hasilBaru.jumlah) * 100);
-          const lulus = aturan.nilaiLulus === null || nilai >= aturan.nilaiLulus;
-          onSelesai(hasilBaru, lulus);
+          onSelesai(hasilBaru, hitungNilai(hasilBaru, aturan).lulus);
           setTahap('hasil');
         }}
       />
     );
   }
 
-  
   return <Hasil aturan={aturan} hasil={hasil} onUlangi={() => setTahap('aturan')} />;
 }

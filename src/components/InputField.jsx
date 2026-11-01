@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function IkonMata() {
   return (
@@ -8,7 +8,6 @@ function IkonMata() {
   );
 }
 
-
 function IkonMataCoret() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -17,15 +16,16 @@ function IkonMataCoret() {
   );
 }
 
+// Input teks berlabel dengan pesan error. Tipe `password` otomatis punya tombol lihat/sembunyikan.
 export default function InputField({
-  label,                  
-  type = 'text',          
-  name,                   
+  label,
+  type = 'text',
+  name,
   placeholder = '',
   value,
   onChange,
-  error = '',             
-  required = false,       
+  error = '',
+  required = false,
   autoComplete,
 }) {
   const [terlihat, setTerlihat] = useState(false);

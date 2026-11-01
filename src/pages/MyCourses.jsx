@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AccountLayout from '../layouts/AccountLayout';
 import Tabs from '../components/Tabs';
@@ -6,23 +6,28 @@ import SearchBox from '../components/SearchBox';
 import Pagination from '../components/Pagination';
 import StatusBadge from '../components/StatusBadge';
 import Gambar from '../components/Gambar';
+import TutorInfo from '../components/TutorInfo';
 import Ikon from '../components/Ikon';
 import Button from '../components/Button';
 import { kelasSaya, tabKelasSaya } from '../data/account';
+import { bagiHalaman, cocokKataCari } from '../utils/list';
 
-const perHalaman = 3;
-const latarHijau = 'bg-brandGreen/[0.04]';
+const PER_HALAMAN = 3;
+const LATAR_HIJAU = 'bg-brandGreen/[0.04]';
+
+// Kelas dianggap selesai kalau semua modul sudah dikerjakan
+const adalahSelesai = (kelas) => kelas.modulSelesai >= kelas.jumlahModul;
 
 function KartuKelas({ kelas }) {
   const navigate = useNavigate();
-  const selesai = kelas.modulSelesai >= kelas.jumlahModul;
+  const selesai = adalahSelesai(kelas);
   const persen = Math.round((kelas.modulSelesai / kelas.jumlahModul) * 100);
   const bukaDetail = () => navigate(`/kelas/${kelas.id}`);
   const bukaBelajar = () => navigate(`/belajar/${kelas.id}`);
 
   return (
     <article className="overflow-hidden border border-borderField rounded-[10px]">
-      <header className={`flex items-center justify-between gap-4 px-4 sm:px-5 py-4 border-b border-borderField ${latarHijau}`}>
+      <header className={`flex items-center justify-between gap-4 px-4 sm:px-5 py-4 border-b border-borderField ${LATAR_HIJAU}`}>
         <p className="text-base sm:text-lg font-medium tracking-[0.2px] text-textPrimary">
           {kelas.modulSelesai} / {kelas.jumlahModul} Modul Terselesaikan
         </p>
@@ -38,15 +43,7 @@ function KartuKelas({ kelas }) {
             <p className="text-base tracking-[0.2px] text-textSecondary">{kelas.deskripsi}</p>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <Gambar nama={kelas.avatar} alt="" label={false} className="w-10 h-10 rounded-[10px]" />
-            <div>
-              <p className="text-base font-medium tracking-[0.2px] text-textPrimary">{kelas.tutor.nama}</p>
-              <p className="text-sm tracking-[0.2px] text-textSecondary">
-                {kelas.tutor.jabatan} di <span className="font-bold">{kelas.tutor.perusahaan}</span>
-              </p>
-            </div>
-          </div>
+          <TutorInfo avatar={kelas.avatar} tutor={kelas.tutor} />
 
           <div className="flex items-center gap-4 text-base tracking-[0.2px] text-textSecondary">
             <span className="flex items-center gap-2"><Ikon nama="modul" ukuran={22} />{kelas.jumlahModul} Modul</span>
@@ -55,7 +52,7 @@ function KartuKelas({ kelas }) {
         </div>
       </div>
 
-      <footer className={`flex flex-col md:flex-row md:items-center gap-4 md:gap-9 px-4 sm:px-5 py-4 border-t border-borderField ${latarHijau}`}>
+      <footer className={`flex flex-col md:flex-row md:items-center gap-4 md:gap-9 px-4 sm:px-5 py-4 border-t border-borderField ${LATAR_HIJAU}`}>
         <div className="flex-1 flex items-center gap-3">
           <p className="text-base tracking-[0.2px] text-textSecondary whitespace-nowrap">
             Progres Kelas: <span className="font-bold text-textPrimary">{persen}%</span>
@@ -99,16 +96,12 @@ export default function MyCourses() {
   const [halaman, setHalaman] = useState(1);
 
   const hasil = kelasSaya.filter((k) => {
-    const selesai = k.modulSelesai >= k.jumlahModul;
-    if (tab === 'selesai' && !selesai) return false;
-    if (tab === 'berjalan' && selesai) return false;
-    if (kataCari.trim() && !k.judul.toLowerCase().includes(kataCari.trim().toLowerCase())) return false;
-    return true;
+    if (tab === 'selesai' && !adalahSelesai(k)) return false;
+    if (tab === 'berjalan' && adalahSelesai(k)) return false;
+    return cocokKataCari(k.judul, kataCari);
   });
 
-  const jumlahHalaman = Math.max(1, Math.ceil(hasil.length / perHalaman));
-  const halamanAktif = Math.min(halaman, jumlahHalaman);
-  const tampil = hasil.slice((halamanAktif - 1) * perHalaman, halamanAktif * perHalaman);
+  const { tampil, halamanAktif, jumlahHalaman } = bagiHalaman(hasil, halaman, PER_HALAMAN);
 
   return (
     <AccountLayout judul="Daftar Kelas" deskripsi="Akses Materi Belajar dan Mulailah Meningkatkan Pengetahuan Anda!">

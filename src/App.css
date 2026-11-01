@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap');
 @import "tailwindcss";
+
+/* Font (DM Sans & Poppins) dimuat dari index.html */
 
 /* Nilai di bawah diambil langsung dari Figma (halaman Login & Register) */
 @theme {

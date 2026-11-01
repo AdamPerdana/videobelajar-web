@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from './Container';
 import Logo from './Logo';
 import Ikon from '../components/Ikon';
 
-
-
-
+// Bilah atas. `children` tampil di kanan; `menuHp` = isi menu yang muncul di layar kecil.
 export default function Navbar({ children, menuHp }) {
   const [terbuka, setTerbuka] = useState(false);
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CheckoutLayout from '../layouts/CheckoutLayout';
 import Gambar from '../components/Gambar';
@@ -8,7 +7,6 @@ const isi = {
   berhasil: { judul: 'Pembayaran Berhasil!', gambar: 'payment-success' },
   tertunda: { judul: 'Pembayaran Tertunda!', gambar: 'payment-pending' },
 };
-
 
 export default function PaymentStatus() {
   const { status } = useParams();

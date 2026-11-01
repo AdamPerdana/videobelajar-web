@@ -1,8 +1,8 @@
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Container from '../layouts/Container';
 import Gambar from '../components/Gambar';
+import TutorInfo from '../components/TutorInfo';
 import Rating from '../components/Rating';
 import Ikon from '../components/Ikon';
 import Button from '../components/Button';
@@ -13,8 +13,8 @@ export default function Certificate() {
   const { id } = useParams();
   const fileSertifikat = gambar(sertifikat.gambar);
 
+  // Mengunduh gambar sertifikat lewat tautan <a download> sementara
   const unduh = () => {
-    
     if (!fileSertifikat) return;
     const tautan = document.createElement('a');
     tautan.href = fileSertifikat;
@@ -46,15 +46,7 @@ export default function Certificate() {
                 <h1 className="font-heading font-semibold text-xl leading-[1.2] text-textPrimary">{sertifikat.judul}</h1>
                 <p className="text-base tracking-[0.2px] text-textSecondary">{sertifikat.deskripsi}</p>
               </div>
-              <div className="flex items-center gap-2.5">
-                <Gambar nama={sertifikat.tutor.avatar} alt="" label={false} className="w-10 h-10 rounded-[10px]" />
-                <div>
-                  <p className="text-base font-medium tracking-[0.2px] text-textPrimary">{sertifikat.tutor.nama}</p>
-                  <p className="text-sm tracking-[0.2px] text-textSecondary">
-                    {sertifikat.tutor.jabatan} di <span className="font-bold">{sertifikat.tutor.perusahaan}</span>
-                  </p>
-                </div>
-              </div>
+              <TutorInfo avatar={sertifikat.tutor.avatar} tutor={sertifikat.tutor} />
               <Rating nilai={sertifikat.rating} jumlah={sertifikat.jumlahReview} />
             </div>
 

@@ -1,7 +1,6 @@
-import React from 'react';
 import Ikon from './Ikon';
 
-
+// Bintang rating (mendukung pecahan, mis. 3.5) dengan angka dan jumlah review.
 export default function Rating({ nilai, jumlah, terang = false }) {
   const persen = Math.max(0, Math.min(100, (nilai / 5) * 100));
   const lima = [1, 2, 3, 4, 5];

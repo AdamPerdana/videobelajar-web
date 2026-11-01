@@ -1,12 +1,12 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Gambar from './Gambar';
+import TutorInfo from './TutorInfo';
 import Rating from './Rating';
-import { hargaRibuan } from '../data/courses';
+import { hargaRibuan } from '../utils/format';
 import { sudahDimiliki } from '../data/account';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
-
+// Kartu kelas. Kelas yang sudah dimiliki langsung membuka ruang belajar, selain itu ke halaman detail.
 export default function CourseCard({ kelas }) {
   const { sudahLogin } = useAuth();
   const tujuan = sudahLogin && sudahDimiliki(kelas.id) ? `/belajar/${kelas.id}` : `/kelas/${kelas.id}`;
@@ -23,15 +23,7 @@ export default function CourseCard({ kelas }) {
         <p className="line-clamp-2 text-base tracking-[0.2px] text-textSecondary">{kelas.deskripsi}</p>
       </div>
 
-      <div className="flex items-center gap-2.5">
-        <Gambar nama={kelas.avatar} alt="" label={false} className="w-10 h-10 rounded-[10px]" />
-        <div className="min-w-0">
-          <p className="text-base font-medium tracking-[0.2px] text-textPrimary">{kelas.tutor.nama}</p>
-          <p className="text-sm tracking-[0.2px] text-textSecondary">
-            {kelas.tutor.jabatan} di <span className="font-bold">{kelas.tutor.perusahaan}</span>
-          </p>
-        </div>
-      </div>
+      <TutorInfo avatar={kelas.avatar} tutor={kelas.tutor} className="min-w-0" />
 
       <div className="flex items-center justify-between gap-2 mt-auto">
         <Rating nilai={kelas.rating} jumlah={kelas.jumlahReview} />

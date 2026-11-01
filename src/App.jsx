@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthProvider';
 import ProtectedRoute from './components/ProtectedRoute';
+import GulirKeAtas from './components/GulirKeAtas';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
 import CourseDetail from './pages/CourseDetail';
@@ -17,50 +17,41 @@ import Certificate from './pages/Certificate';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-
-function GulirKeAtas() {
-  const { pathname } = useLocation();
-  const { lupakanKeluar } = useAuth();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    lupakanKeluar();
-  }, [pathname]);
-  return null;
-}
-
 export default function App() {
   return (
     <AuthProvider>
-    <BrowserRouter>
-      <GulirKeAtas />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/kategori" element={<Catalog />} />
-        <Route path="/kelas/:id" element={<CourseDetail />} />
+      <BrowserRouter>
+        <GulirKeAtas />
+        <Routes>
+          {/* Halaman publik */}
+          <Route path="/" element={<Home />} />
+          <Route path="/kategori" element={<Catalog />} />
+          <Route path="/kelas/:id" element={<CourseDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Halaman di dalam ProtectedRoute hanya bisa dibuka setelah login */}
-        {/* Alur pembayaran */}
-        <Route path="/checkout/:id" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-        <Route path="/bayar/:id" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-        <Route path="/ubah-metode/:id" element={<ProtectedRoute><ChangeMethod /></ProtectedRoute>} />
-        <Route path="/pembayaran/:status" element={<ProtectedRoute><PaymentStatus /></ProtectedRoute>} />
+          {/* Semua rute di dalam sini hanya bisa dibuka setelah login */}
+          <Route element={<ProtectedRoute />}>
+            {/* Alur pembayaran */}
+            <Route path="/checkout/:id" element={<Checkout />} />
+            <Route path="/bayar/:id" element={<Payment />} />
+            <Route path="/ubah-metode/:id" element={<ChangeMethod />} />
+            <Route path="/pembayaran/:status" element={<PaymentStatus />} />
 
-        {/* Akun */}
-        <Route path="/profil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/kelas-saya" element={<ProtectedRoute><MyCourses /></ProtectedRoute>} />
-        <Route path="/pesanan" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+            {/* Akun */}
+            <Route path="/profil" element={<Profile />} />
+            <Route path="/kelas-saya" element={<MyCourses />} />
+            <Route path="/pesanan" element={<Orders />} />
 
-        {/* Ruang belajar */}
-        <Route path="/belajar/:id" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
-        <Route path="/sertifikat/:id" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
+            {/* Ruang belajar */}
+            <Route path="/belajar/:id" element={<Learn />} />
+            <Route path="/sertifikat/:id" element={<Certificate />} />
+          </Route>
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        {/* Alamat yang tidak dikenal dikembalikan ke Beranda */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Alamat yang tidak dikenal dikembalikan ke Beranda */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   );
 }

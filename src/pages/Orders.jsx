@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AccountLayout from '../layouts/AccountLayout';
 import Tabs from '../components/Tabs';
 import SearchBox from '../components/SearchBox';
@@ -6,18 +6,19 @@ import SortDropdown from '../components/SortDropdown';
 import Pagination from '../components/Pagination';
 import StatusBadge from '../components/StatusBadge';
 import Gambar from '../components/Gambar';
-import { rupiah } from '../data/payment';
-import { daftarPesanan, formatWaktu, labelStatusPesanan, tabPesanan, urutanPesanan } from '../data/account';
+import { daftarPesanan, labelStatusPesanan, tabPesanan, urutanPesanan } from '../data/account';
+import { formatWaktu, rupiah } from '../utils/format';
+import { bagiHalaman, cocokKataCari } from '../utils/list';
 
-const perHalaman = 5;
-const latarHijau = 'bg-brandGreen/[0.04]';
+const PER_HALAMAN = 5;
+const LATAR_HIJAU = 'bg-brandGreen/[0.04]';
 
 function KartuPesanan({ pesanan }) {
   const status = labelStatusPesanan[pesanan.status];
 
   return (
     <article className="overflow-hidden border border-borderField rounded-[10px]">
-      <header className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 sm:px-5 py-4 border-b border-borderField ${latarHijau}`}>
+      <header className={`flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 sm:px-5 py-4 border-b border-borderField ${LATAR_HIJAU}`}>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-base sm:text-lg tracking-[0.2px] text-textSecondary">
           <p>
             No. Invoice:{' '}
@@ -40,7 +41,7 @@ function KartuPesanan({ pesanan }) {
         </div>
       </div>
 
-      <footer className={`flex items-center justify-between gap-9 px-4 sm:px-5 py-4 border-t border-borderField ${latarHijau}`}>
+      <footer className={`flex items-center justify-between gap-9 px-4 sm:px-5 py-4 border-t border-borderField ${LATAR_HIJAU}`}>
         <p className="flex-1 text-base tracking-[0.2px] text-textSecondary">Total Pembayaran</p>
         <p className="sm:w-[215px] sm:pl-9 text-lg font-bold tracking-[0.2px] text-brandGreen">{rupiah(pesanan.harga)}</p>
       </footer>
@@ -54,20 +55,14 @@ export default function Orders() {
   const [urutan, setUrutan] = useState('');
   const [halaman, setHalaman] = useState(1);
 
-  let hasil = daftarPesanan.filter((p) => {
-    if (tab !== 'semua' && p.status !== tab) return false;
-    if (kataCari.trim() && !p.judul.toLowerCase().includes(kataCari.trim().toLowerCase())) return false;
-    return true;
-  });
-
+  const terfilter = daftarPesanan.filter(
+    (p) => (tab === 'semua' || p.status === tab) && cocokKataCari(p.judul, kataCari)
+  );
   const urutanAktif = urutanPesanan.find((u) => u.id === urutan);
-  if (urutanAktif) hasil = [...hasil].sort(urutanAktif.banding);
+  const hasil = urutanAktif ? [...terfilter].sort(urutanAktif.banding) : terfilter;
+  const { tampil, halamanAktif, jumlahHalaman } = bagiHalaman(hasil, halaman, PER_HALAMAN);
 
-  const jumlahHalaman = Math.max(1, Math.ceil(hasil.length / perHalaman));
-  const halamanAktif = Math.min(halaman, jumlahHalaman);
-  const tampil = hasil.slice((halamanAktif - 1) * perHalaman, halamanAktif * perHalaman);
-
-  
+  // Membungkus setter state: setelah nilainya diubah, kembali ke halaman pertama
   const ubah = (setter) => (nilai) => {
     setter(nilai);
     setHalaman(1);

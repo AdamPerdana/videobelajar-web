@@ -1,16 +1,40 @@
-# React + Vite
+# videobelajar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Platform video belajar (latihan bootcamp) dibuat dengan React + Vite + Tailwind CSS v4.
+Data pengguna dan foto profil memakai MockAPI lewat Axios.
 
-Currently, two official plugins are available:
+## Menjalankan
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+cp .env.example .env     # lalu isi VITE_API_URL (akun) dan VITE_API_KELAS_URL (kelas) dengan alamat MockAPI kamu
+npm run dev              # buka alamat yang tampil di terminal
+```
 
-## React Compiler
+Perintah lain: `npm run build` (build produksi), `npm run lint` (cek kualitas kode).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Struktur folder
 
-## Expanding the ESLint configuration
+```
+src/
+├── assets/        Gambar + images.js (memanggil gambar lewat nama)
+├── components/    Komponen kecil yang dipakai ulang (Button, Modal, CourseCard, ...)
+├── context/       AuthProvider: menyimpan data login
+├── data/          Data contoh (kelas, pesanan, modul, metode pembayaran)
+├── hooks/         Hook buatan sendiri (useAuth, useTersalin, useProgresBelajar)
+├── layouts/       Kerangka halaman (Navbar, Footer, MainLayout, ...)
+├── pages/         Satu file per halaman / rute
+├── services/api/  Pemanggilan API (userApi.js untuk akun, courseApi.js untuk kelas)
+├── store/redux/  State global Redux: store.js dan kelasReducer.js (daftar kelas)
+├── utils/         Fungsi bantu murni (format, validasi, daftar, storage)
+├── App.jsx        Daftar rute
+├── App.css        Tailwind + warna dan font dari Figma (@theme)
+└── main.jsx       Titik masuk aplikasi
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Catatan
+
+- Rute yang butuh login dibungkus `ProtectedRoute` di `App.jsx`.
+- Warna dan font diatur di `@theme` pada `src/App.css` (Tailwind v4, tidak memakai `tailwind.config.js`).
+- Kata sandi di MockAPI disimpan apa adanya karena ini hanya latihan. Aplikasi sungguhan
+  harus memverifikasi login di server dan menyimpan kata sandi dalam bentuk hash.

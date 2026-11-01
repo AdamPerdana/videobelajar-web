@@ -1,5 +1,5 @@
-import React from 'react';
 
+// Input dengan label melayang di garis atas kotak. Kalau `pilihan` diberikan, jadi dropdown.
 export default function FloatingField({
   label,
   name,
@@ -7,7 +7,7 @@ export default function FloatingField({
   value,
   onChange,
   error = '',
-  pilihan,              
+  pilihan,
   inputMode,
   autoComplete,
 }) {

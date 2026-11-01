@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Ikon from './Ikon';
 
-
-
+// Menu pilihan urutan. `pilihan` = [{ id, label }], `nilai` = id terpilih, `onUbah(id)`.
 export default function SortDropdown({ pilihan, nilai, onUbah }) {
   const [terbuka, setTerbuka] = useState(false);
   const aktif = pilihan.find((p) => p.id === nilai);

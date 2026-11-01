@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Gambar from './Gambar';
 import Ikon from './Ikon';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { menuAkun } from '../data/account';
 
-
+// Foto profil di navbar yang membuka menu akun (Profil, Kelas, Pesanan, Keluar).
 export default function UserMenu() {
   const [terbuka, setTerbuka] = useState(false);
   const { pengguna, logout } = useAuth();

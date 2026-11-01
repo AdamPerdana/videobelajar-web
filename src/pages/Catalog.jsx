@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MainLayout from '../layouts/MainLayout';
 import Container from '../layouts/Container';
 import Sidebar from '../layouts/Sidebar';
@@ -6,53 +6,51 @@ import CourseCard from '../components/CourseCard';
 import Pagination from '../components/Pagination';
 import SearchBox from '../components/SearchBox';
 import SortDropdown from '../components/SortDropdown';
+import SectionHeading from '../components/SectionHeading';
 import { daftarKelas, pilihanHarga, pilihanDurasi, pilihanUrutan } from '../data/courses';
+import { bagiHalaman, cocokKataCari } from '../utils/list';
 
-const filterKosong = { bidang: [], harga: [], durasi: '' };
-const perHalaman = 6;
+const FILTER_KOSONG = { bidang: [], harga: [], durasi: '' };
+const PER_HALAMAN = 6;
+
+// Apakah sebuah kelas lolos semua filter yang sedang aktif?
+function lolosFilter(kelas, filter, kataCari) {
+  if (filter.bidang.length > 0 && !filter.bidang.includes(kelas.kategori)) return false;
+
+  if (filter.harga.length > 0) {
+    const cocokHarga = pilihanHarga.some((h) => filter.harga.includes(h.id) && h.cocok(kelas.harga));
+    if (!cocokHarga) return false;
+  }
+
+  if (filter.durasi) {
+    const pilihan = pilihanDurasi.find((d) => d.id === filter.durasi);
+    if (!pilihan.cocok(kelas.durasi)) return false;
+  }
+
+  return cocokKataCari(kelas.judul, kataCari);
+}
 
 export default function Catalog() {
-  const [filter, setFilter] = useState(filterKosong);
+  const [filter, setFilter] = useState(FILTER_KOSONG);
   const [urutan, setUrutan] = useState('');
   const [kataCari, setKataCari] = useState('');
   const [halaman, setHalaman] = useState(1);
 
-  
-  let hasil = daftarKelas.filter((kelas) => {
-    if (filter.bidang.length > 0 && !filter.bidang.includes(kelas.kategori)) return false;
-
-    if (filter.harga.length > 0) {
-      const cocokHarga = pilihanHarga.some((h) => filter.harga.includes(h.id) && h.cocok(kelas.harga));
-      if (!cocokHarga) return false;
-    }
-
-    if (filter.durasi) {
-      const pilihan = pilihanDurasi.find((d) => d.id === filter.durasi);
-      if (!pilihan.cocok(kelas.durasi)) return false;
-    }
-
-    if (kataCari.trim() && !kelas.judul.toLowerCase().includes(kataCari.trim().toLowerCase())) return false;
-
-    return true;
-  });
-
-  
+  // Hasil (filter -> urutkan -> bagi halaman) dihitung langsung dari state di setiap render,
+  // tidak perlu disimpan di state sendiri.
+  const terfilter = daftarKelas.filter((kelas) => lolosFilter(kelas, filter, kataCari));
   const urutanAktif = pilihanUrutan.find((u) => u.id === urutan);
-  if (urutanAktif) hasil = [...hasil].sort(urutanAktif.banding);
+  const hasil = urutanAktif ? [...terfilter].sort(urutanAktif.banding) : terfilter;
+  const { tampil: kelasTampil, halamanAktif, jumlahHalaman } = bagiHalaman(hasil, halaman, PER_HALAMAN);
 
-  
-  const jumlahHalaman = Math.max(1, Math.ceil(hasil.length / perHalaman));
-  const halamanAktif = Math.min(halaman, jumlahHalaman);
-  const kelasTampil = hasil.slice((halamanAktif - 1) * perHalaman, halamanAktif * perHalaman);
-
-  
+  // Setiap filter / urutan / pencarian berubah, kembali ke halaman pertama
   const ubahFilter = (baru) => {
     setFilter(baru);
     setHalaman(1);
   };
 
   const reset = () => {
-    setFilter(filterKosong);
+    setFilter(FILTER_KOSONG);
     setUrutan('');
     setKataCari('');
     setHalaman(1);
@@ -61,14 +59,11 @@ export default function Catalog() {
   return (
     <MainLayout>
       <Container className="py-7 md:py-16 flex flex-col gap-6 md:gap-9">
-        <div className="flex flex-col gap-2.5">
-          <h1 className="font-heading font-semibold text-2xl sm:text-[32px] leading-[1.1] text-textPrimary">
-            Koleksi Video Pembelajaran Unggulan
-          </h1>
-          <p className="text-base font-medium tracking-[0.2px] text-textSecondary">
-            Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!
-          </p>
-        </div>
+        <SectionHeading
+          as="h1"
+          judul="Koleksi Video Pembelajaran Unggulan"
+          deskripsi="Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!"
+        />
 
         <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-10">
           <div className="w-full lg:w-[366px] lg:shrink-0">

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Ikon from '../components/Ikon';
 import { pilihanBidang, pilihanHarga, pilihanDurasi } from '../data/courses';
-
 
 function KelompokFilter({ ikon, judul, children }) {
   const [terbuka, setTerbuka] = useState(true);
@@ -41,10 +40,8 @@ function Pilihan({ jenis, nama, label, dipilih, onChange }) {
   );
 }
 
-
-
+// Panel filter katalog (bidang studi, harga, durasi). State filter dimiliki halaman Catalog.
 export default function Sidebar({ filter, onUbah, onReset }) {
-  
   const ganti = (kunci, nilai) => {
     const lama = filter[kunci];
     const baru = lama.includes(nilai) ? lama.filter((n) => n !== nilai) : [...lama, nilai];

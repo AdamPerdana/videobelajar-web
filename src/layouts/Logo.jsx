@@ -1,8 +1,6 @@
-import React from 'react';
 import { gambar } from '../assets/images';
 
-
-
+// Logo videobelajar; kalau file logo tidak ada, tampil teks bergradasi sebagai gantinya.
 export default function Logo({ className = '' }) {
   const src = gambar('VideoBelajarLogo');
 

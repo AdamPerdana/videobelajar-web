@@ -1,9 +1,9 @@
-import React from 'react';
 import Accordion from './Accordion';
 import Gambar from './Gambar';
 import Ikon from './Ikon';
 import { kelompokMetode } from '../data/payment';
 
+// Daftar metode pembayaran per kelompok. `terpilih` = id metode, `onPilih(id)`.
 export default function PaymentMethodList({ terpilih, onPilih, awalTerbuka = false }) {
   return (
     <div className="flex flex-col gap-3">

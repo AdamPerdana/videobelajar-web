@@ -1,6 +1,6 @@
-import React from 'react';
 import Ikon from './Ikon';
 
+// Tombol nomor halaman. Tidak tampil kalau hanya ada satu halaman.
 export default function Pagination({ halaman, jumlahHalaman, onGanti }) {
   if (jumlahHalaman <= 1) return null;
 
